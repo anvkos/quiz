@@ -1,0 +1,20 @@
+<h2>Add new quiz</h2>
+
+= form_for @quiz do |f|
+  p
+    = f.label :title
+    = f.text_field :title
+  p
+    = f.label :description
+    = f.text_area :description, size: '24x6'
+  p
+    = f.label :rules
+    = f.text_area :rules, size: '24x6'
+  p
+    = f.label :starts_on
+    = f.text_field :starts_on
+  p
+    = f.label :ends_on
+    = f.text_field :ends_on
+  p
+    = f.submit 'Create'
