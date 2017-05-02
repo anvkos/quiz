@@ -1,10 +1,9 @@
-h2
-  = @quiz.title
-p
-  = @quiz.description
-p
-  span = @quiz.starts_on
-  span = @quiz.ends_on
-div
-  = @quiz.rules
+= render @quiz
+
+.form_add_question
+  = render 'questions/form', quiz: @quiz, question: @question
+
+.questions
+  h3 Questions
+  = render @quiz.questions
 

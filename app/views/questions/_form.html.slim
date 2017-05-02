@@ -1,0 +1,9 @@
+div
+  | Add new question
+  = form_for [quiz, question], remote: true  do |f|
+    = f.label :body
+    .question-errors.text-danger
+    = f.text_field :body
+    = render 'answers/form', f: f, answer: question.answers.build
+    div
+      = f.submit 'Add', class: 'btn btn-success'
