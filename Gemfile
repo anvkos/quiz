@@ -35,6 +35,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'dotenv-rails'
 gem 'slim-rails'
 gem 'responders'
+gem 'cocoon'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
