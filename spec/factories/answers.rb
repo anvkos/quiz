@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :answer do
     body { Faker::Lorem.sentence }
-    references question
+    question
     correct false
   end
 end

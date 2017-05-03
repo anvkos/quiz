@@ -1,8 +1,9 @@
 - if question.persisted?
     div class=['question', "question-#{question.id}"]
-      = question.body
+      .text-info
+        = question.body
       div.question-answers
         | Answers:
-        hr
         = render question.answers
+      hr
 

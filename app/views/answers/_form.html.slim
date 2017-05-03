@@ -1,7 +1,8 @@
-div
+.col-sm-offset-2.col-sm-10
   | Answers:
-  div
+  .answer-fields
     = f.fields_for :answers, answer do |answer_form|
       = render 'answers/answer_fields', f: answer_form
-    .links
+    .links.pull-right
       = link_to_add_association 'add answer', f, :answers, partial: 'answers/answer_fields'
+

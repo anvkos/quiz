@@ -1,9 +1,10 @@
-div
-  | Add new question
-  = form_for [quiz, question], remote: true  do |f|
-    = f.label :body
-    .question-errors.text-danger
-    = f.text_field :body
-    = render 'answers/form', f: f, answer: question.answers.build
-    div
-      = f.submit 'Add', class: 'btn btn-success'
+= form_for [quiz, question], remote: true, html: { class: 'form-horizontal' } do |f|
+  .col-sm-offset-2.col-sm-10.question-errors.text-danger
+  .form-group.question-fields
+    = f.label :body, class: 'col-sm-2 control-label'
+    .col-sm-10
+      = f.text_field :body, class: 'form-control'
+  = render 'answers/form', f: f, answer: question.answers.build
+  .form-group
+    .col-sm-offset-2.col-sm-10
+      = f.submit 'Add new question', class: 'btn btn-success'

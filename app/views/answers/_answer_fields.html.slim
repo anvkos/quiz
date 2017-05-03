@@ -1,8 +1,12 @@
 .nested-fields
-  .field
-    = f.label :body
-    = f.text_field :body
-  .field
-    = f.label :correct
-    = f.check_box :correct, {}, true, false
-  = link_to_remove_association "remove answer", f
+  .field.input-group
+    span.input-group-addon
+      = f.label :correct
+    span.input-group-addon
+      = f.check_box :correct, {}, true, false
+    span.input-group-addon
+      = f.label :body
+    = f.text_field :body, class: 'form-control'
+  .pull-right
+    = link_to_remove_association "remove answer", f
+  hr

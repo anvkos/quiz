@@ -6,4 +6,5 @@ $('.question-errors').html('');
 <% else %>
     $('.questions').append('<%= j render @question %>');
     $('#question_body').val('');
+    $( "input[id^='question_answers_attributes']" ).val('');
 <% end %>

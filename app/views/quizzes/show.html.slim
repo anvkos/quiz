@@ -1,9 +1,12 @@
 = render @quiz
 
-.form_add_question
-  = render 'questions/form', quiz: @quiz, question: @question
+.form_add_question.panel.panel-default
+  .panel-heading Add new question
+  .panel-body
+    = render 'questions/form', quiz: @quiz, question: @question
 
-.questions
-  h3 Questions
-  = render @quiz.questions
+.questions.panel.panel-default
+  .panel-heading Questions
+  .panel-body
+    = render @quiz.questions
 
