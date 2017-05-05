@@ -109,4 +109,17 @@ RSpec.describe QuizzesController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    let!(:quiz) { create(:quiz) }
+
+    it 'delete quiz' do
+      expect { delete :destroy, params: { id: quiz } }.to change(Quiz, :count).by(-1)
+    end
+
+    it 'redirect to index view' do
+      delete :destroy, params: { id: quiz }
+      expect(response).to redirect_to quizzes_path
+    end
+  end
 end

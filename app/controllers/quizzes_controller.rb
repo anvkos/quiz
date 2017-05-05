@@ -1,8 +1,12 @@
 class QuizzesController < ApplicationController
-  before_action :set_quiz, only: [:show, :update]
+  before_action :set_quiz, only: [:show, :update, :destroy]
   before_action :build_question, only: [:show]
 
   respond_to :js, only: [:update]
+
+  def index
+    respond_with(@quiz = Quiz.all)
+  end
 
   def new
     respond_with(@quiz = Quiz.new)
@@ -18,6 +22,11 @@ class QuizzesController < ApplicationController
 
   def update
     @quiz.update(quiz_params)
+    respond_with(@quiz)
+  end
+
+  def destroy
+    @quiz.destroy
     respond_with(@quiz)
   end
 

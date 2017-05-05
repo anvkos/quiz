@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  root 'quiz#index'
   resources :quizzes do
     resources :questions, shallow: true
   end

@@ -11,3 +11,4 @@
   .quiz-edit
     = link_to 'Edit', '', class: 'edit-quiz-link text-success'
     = render 'form_edit', quiz: quiz
+  = link_to 'Delete', @quiz, method: :delete, class: 'btn'
