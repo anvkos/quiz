@@ -57,4 +57,56 @@ RSpec.describe QuizzesController, type: :controller do
       expect(response).to render_template :show
     end
   end
+
+  describe 'PATCH #update' do
+    let(:quiz) { create(:quiz) }
+
+    context 'valid attributes' do
+
+      it 'assigns the requested quiz to @quiz' do
+        patch :update, params: { id: quiz, quiz: attributes_for(:quiz), format: :js }
+        expect(assigns(:quiz)).to eq quiz
+      end
+
+      it 'change quiz attributes' do
+        updated = {
+          title: 'updated title',
+          description: 'updated description',
+          rules: 'updated rules',
+          starts_on: Time.zone.now + 1.hours,
+          ends_on: Time.zone.now + 1.day
+        }
+        patch :update, params: { id: quiz, quiz: updated, format: :js }
+        quiz.reload
+        updated.each do |attr, value|
+          expect(quiz.send(attr)).to eq value.to_s
+        end
+      end
+
+      it 'render update template' do
+        patch :update, params: { id: quiz, quiz: attributes_for(:quiz), format: :js }
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'invalid attributes' do
+      let(:expetced_data) { { title: "premier Title", description: 'premier description', rules: 'premier' } }
+      let(:quiz) { create(:quiz, expetced_data) }
+
+      before do
+        patch :update, params: { id: quiz, quiz: { title: 'updated title', description: nil }, format: :js }
+      end
+
+      it 'does not update quiz' do
+        quiz.reload
+        expetced_data.each do |attr, value|
+          expect(quiz.send(attr)).to eq value
+        end
+      end
+
+      it 'render update template' do
+        expect(response).to render_template :update
+      end
+    end
+  end
 end

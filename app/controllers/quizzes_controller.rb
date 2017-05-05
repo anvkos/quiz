@@ -1,6 +1,8 @@
 class QuizzesController < ApplicationController
-  before_action :set_quiz, only: [:show]
+  before_action :set_quiz, only: [:show, :update]
   before_action :build_question, only: [:show]
+
+  respond_to :js, only: [:update]
 
   def new
     respond_with(@quiz = Quiz.new)
@@ -11,6 +13,11 @@ class QuizzesController < ApplicationController
   end
 
   def show
+    respond_with(@quiz)
+  end
+
+  def update
+    @quiz.update(quiz_params)
     respond_with(@quiz)
   end
 

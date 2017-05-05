@@ -1,0 +1,8 @@
+$('.quiz-errors').html('');
+<% if @quiz.errors.present? %>
+    <% @quiz.errors.full_messages.each do |message| %>
+        $('.quiz-errors').append('<span><%= j message %></span>');
+    <% end %>
+<% else %>
+    $('.quiz').html('<%= j render @quiz %>');
+<% end %>
