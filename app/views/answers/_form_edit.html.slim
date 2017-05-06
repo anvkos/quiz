@@ -1,0 +1,15 @@
+.pull-right
+  = link_to 'Edit', '', class: 'edit-answer-link btn btn-xs btn-success', data: { answer_id: answer.id }
+  = link_to 'Delete', answer, method: :delete, data: { confirm: 'The answer will be deleted. You are sure?' }, remote: true, class: 'btn btn-xs btn-danger'
+.answer-edit
+  = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}", class: 'edit_answer form-horizontal' } do |f|
+    .answer-errors.text-danger
+    .input-group
+      span.input-group-addon
+        = f.label :correct
+      span.input-group-addon
+        = f.check_box :correct, { id: "correct-answer-#{answer.id}" }, true, false
+      span.input-group-addon
+        = f.label :body
+      = f.text_field :body, id: "body-answer-#{answer.id}",  class: 'form-control'
+      = f.submit 'Save', class: 'btn btn-default btn-sm'
