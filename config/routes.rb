@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  root 'quiz#index'
+  devise_for :users
+  root 'quizzes#index'
   resources :quizzes do
     resources :questions, shallow: true do
     end
