@@ -2,9 +2,12 @@ class QuestionsController < ApplicationController
   before_action :set_quiz, only: [:create]
   before_action :set_question, only: [:update, :destroy]
 
+  authorize_resource
+
   respond_to :js
 
   def create
+    authorize! :create, @quiz.questions.new
     respond_with(@question = @quiz.questions.create(question_params))
   end
 

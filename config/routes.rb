@@ -2,8 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   root 'quizzes#index'
   resources :quizzes do
-    resources :questions, shallow: true do
-    end
+    resources :questions, shallow: true
   end
   resources :answers, only: [:update, :destroy]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
