@@ -2,6 +2,7 @@
     div class=['question', "question-#{question.id}"]
       .text-info
         = question.body
+      = render 'questions/form_edit', question: question
       div.question-answers
         | Answers:
         = render question.answers

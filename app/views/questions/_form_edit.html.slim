@@ -1,0 +1,12 @@
+.pull-right
+  = link_to 'Edit', '', class: 'edit-question-link btn btn-xs btn-success', data: { question_id: question.id }
+  = link_to 'Delete', question, method: :delete, data: { confirm: 'The question will be deleted. You are sure?' }, remote: true, class: 'btn btn-xs btn-danger'
+.question-edit
+  = form_for question, remote: true, html: { id: "edit-question-#{question.id}", class: 'edit_question form-horizontal' } do |f|
+    .question-errors.text-danger
+    .form-group
+      = f.label :body, 'Text question', class: 'col-sm-2 control-label'
+      .col-sm-9
+        = f.text_field :body, id: "body-question-#{question.id}", class: 'form-control'
+      .col-sm-1
+        = f.submit 'Save', class: 'btn btn-default btn-sm'

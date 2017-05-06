@@ -30,4 +30,55 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #update' do
+    let!(:question) { create(:question) }
+
+    context 'with valid attributes' do
+      it 'assings the requested question to @question' do
+        patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'changes question attributes' do
+        updated_body = 'new updated body'
+        patch :update, params: { id: question, question: { body: updated_body }, format: :js }
+        question.reload
+        expect(question.body).to eq updated_body
+      end
+
+      it 'render update template' do
+        patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'with invalid attributes' do
+      before do
+        patch :update, params: { id: question, question: { body: nil }, format: :js }
+      end
+
+      it 'does not update the question' do
+        question.reload
+        expect(question.body).not_to be_empty
+      end
+
+      it 'render update template' do
+        expect(response).to render_template :update
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:question) { create(:question) }
+
+    it 'delete question' do
+      expect { delete :destroy, params: { id: question }, format: :js }.to change(Question, :count).by(-1)
+    end
+
+    it 'render destroy template' do
+      delete :destroy, params: { id: question }, format: :js
+      expect(response).to render_template :destroy
+    end
+  end
 end

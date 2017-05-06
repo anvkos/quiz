@@ -4,7 +4,7 @@ $('.question-errors').html('');
         $('.question-errors').append('<span><%= j message %></span>');
     <% end %>
 <% else %>
-    $('.questions').append('<%= j render @question %>');
+    $('.questions .panel-body').append('<%= j render @question %>');
     $('#question_body').val('');
     $( "input[id^='question_answers_attributes']" ).val('');
 <% end %>

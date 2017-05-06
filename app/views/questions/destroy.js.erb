@@ -1,0 +1,6 @@
+<% if @question.destroyed? %>
+  $('.question-<%= @question.id %>').remove();
+  $('.notice').html('Question was successfully destroyed.');
+<% else %>
+  $('.alert').html('You can not remove an question!');
+<% end %>
