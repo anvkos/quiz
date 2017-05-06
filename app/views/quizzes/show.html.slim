@@ -1,12 +1,10 @@
-= render @quiz
-
-.form_add_question.panel.panel-default
-  .panel-heading Add new question
-  .panel-body
-    = render 'questions/form', quiz: @quiz, question: @question
-
-.questions.panel.panel-default
-  .panel-heading Questions
-  .panel-body
-    = render @quiz.questions
-
+.quiz
+  h2
+    = @quiz.title
+  p
+    = @quiz.description
+  p
+    span = @quiz.starts_on
+    span = @quiz.ends_on
+  div
+    = @quiz.rules

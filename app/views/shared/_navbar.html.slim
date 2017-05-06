@@ -7,8 +7,9 @@ nav class="navbar  navbar-default navbar-fixed-top"
       ul class="nav navbar-nav"
         li
           = link_to 'Home', root_path
-        li
-          = link_to 'New Quiz',  new_quiz_path
+        - if user_signed_in?
+          li
+            = link_to 'Create Quiz',  new_quiz_path
       ul class="nav navbar-nav navbar-right"
         - if user_signed_in?
             li

@@ -2,13 +2,15 @@ require_relative '../feature_helper'
 
 feature 'Delete quiz', %q{
   In order to delete wrong quiz
-  As a user
+  As the author of the quiz
   I want to be able to delete quiz
 } do
-  given(:quiz) { create(:quiz) }
+  given(:user) { create(:user) }
+  given(:quiz) { create(:quiz, user: user) }
 
-  scenario 'User remove quiz' do
-    visit quiz_path(quiz)
+  scenario 'Authenticated user remove quiz' do
+    sign_in(user)
+    visit edit_quiz_path(quiz)
     within '.quiz' do
       click_on 'Delete'
     end

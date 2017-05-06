@@ -1,6 +1,9 @@
 class QuizzesController < ApplicationController
-  before_action :set_quiz, only: [:show, :update, :destroy]
-  before_action :build_question, only: [:show]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_quiz, only: [:show, :edit, :update, :destroy]
+  before_action :build_question, only: [:edit]
+
+  authorize_resource
 
   respond_to :js, only: [:update]
 
@@ -13,10 +16,14 @@ class QuizzesController < ApplicationController
   end
 
   def create
-    respond_with(@quiz = Quiz.create(quiz_params))
+    respond_with(@quiz = current_user.quizzes.create(quiz_params))
   end
 
   def show
+    respond_with(@quiz)
+  end
+
+  def edit
     respond_with(@quiz)
   end
 
