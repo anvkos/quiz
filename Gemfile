@@ -37,6 +37,7 @@ gem 'slim-rails'
 gem 'responders'
 gem 'cocoon'
 gem 'devise', git: 'https://github.com/plataformatec/devise.git'
+gem 'cancancan'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
