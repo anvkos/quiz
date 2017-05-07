@@ -106,7 +106,7 @@ RSpec.describe QuestionsController, type: :controller do
           patch :update, params: { id: question, question: { body: updated_body }, format: :js }
         end
 
-        it 'try update answer' do
+        it 'try update question' do
           question.reload
           expect(question.body).to_not eq updated_body
         end
@@ -150,7 +150,7 @@ RSpec.describe QuestionsController, type: :controller do
         before { sign_in another_user }
 
         it 'delete try question' do
-          expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+          expect { delete :destroy, params: { id: question }, format: :js }.to_not change(Question, :count)
         end
 
         it 'render forbidden template' do
@@ -163,7 +163,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'Unauthorized user' do
       it 'delete question' do
-        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+        expect { delete :destroy, params: { id: question }, format: :js }.to_not change(Question, :count)
       end
     end
   end

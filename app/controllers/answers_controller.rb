@@ -1,6 +1,8 @@
 class AnswersController < ApplicationController
   before_action :set_answer, only: [:update, :destroy]
 
+  authorize_resource
+
   respond_to :js
 
   def update
