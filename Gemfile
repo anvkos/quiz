@@ -38,6 +38,7 @@ gem 'responders'
 gem 'cocoon'
 gem 'devise', git: 'https://github.com/plataformatec/devise.git'
 gem 'cancancan'
+gem 'active_model_serializers'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -51,6 +52,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5'
   gem 'factory_girl_rails'
   gem 'faker'
+  gem 'foreman'
 end
 
 group :development do
