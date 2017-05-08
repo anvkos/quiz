@@ -1,14 +1,5 @@
 <template>
-<!--   <div id="app">
-    <h2>{{ quiz.title }}</h2>
-    <div>{{ quiz.description }}</div>
-    <ul>
-      <li v-for="question in questions" :key="question.id">
-        {{ question. id }} {{ question.body }}
-      </li>
-    </ul>
-  </div> -->
-  <div class="container">
+    <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <h2 class="text-center">{{ quiz.title}}</h2>
