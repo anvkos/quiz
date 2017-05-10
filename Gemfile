@@ -39,6 +39,7 @@ gem 'cocoon'
 gem 'devise', git: 'https://github.com/plataformatec/devise.git'
 gem 'cancancan'
 gem 'active_model_serializers'
+gem 'wisper'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -71,7 +72,8 @@ group :test do
   gem 'launchy'
   gem 'capybara-webkit'
   gem 'database_cleaner'
-  gem 'simplecov', :require => false
+  gem 'simplecov', require: false
+  gem 'wisper-rspec', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
