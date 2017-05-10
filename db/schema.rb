@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170506102052) do
+ActiveRecord::Schema.define(version: 20170509064833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,12 +24,34 @@ ActiveRecord::Schema.define(version: 20170506102052) do
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
+  create_table "games", force: :cascade do |t|
+    t.bigint "quiz_id"
+    t.bigint "user_id"
+    t.integer "score", default: 0
+    t.boolean "finished", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quiz_id"], name: "index_games_on_quiz_id"
+    t.index ["user_id"], name: "index_games_on_user_id"
+  end
+
   create_table "questions", force: :cascade do |t|
     t.string "body"
     t.bigint "quiz_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["quiz_id"], name: "index_questions_on_quiz_id"
+  end
+
+  create_table "questions_games", force: :cascade do |t|
+    t.integer "game_id"
+    t.integer "question_id"
+    t.boolean "answer_correctly"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id", "question_id"], name: "index_questions_games_on_game_id_and_question_id", unique: true
+    t.index ["game_id"], name: "index_questions_games_on_game_id"
+    t.index ["question_id"], name: "index_questions_games_on_question_id"
   end
 
   create_table "quizzes", force: :cascade do |t|
@@ -64,6 +86,8 @@ ActiveRecord::Schema.define(version: 20170506102052) do
   end
 
   add_foreign_key "answers", "questions"
+  add_foreign_key "games", "quizzes"
+  add_foreign_key "games", "users"
   add_foreign_key "questions", "quizzes"
   add_foreign_key "quizzes", "users"
 end
