@@ -19,12 +19,15 @@ RSpec.describe StartGameService do
       expect{ service.perform(quiz, user) }.to change(QuestionsGame, :count).by(1)
     end
 
-    it 'return nil - question not found' do
+    it 'publishes :no_questions_quiz' do
       quiz_without_question = create(:quiz)
-      expect(service.perform(quiz_without_question, user)).to be_nil
+      expect{ service.perform(quiz_without_question, user) }.to broadcast(:no_questions_quiz)
     end
 
-    it 'user rating increases the count of games'
-
+    it 'user rating increases the count of games' do
+      rating = create(:rating, user: user, quiz: quiz)
+      service.perform(quiz, user)
+      expect(rating.reload.count_games).to eq 1
+    end
   end
 end

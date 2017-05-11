@@ -33,6 +33,8 @@ class PlayGameService
   end
 
   def finish_game(game)
+    rating = Rating.find_by(user_id: game.user_id, quiz_id: game.quiz_id)
+    rating.update(max_score: game.score) if rating.max_score < game.score
     broadcast(:game_finished, game)
   end
 end

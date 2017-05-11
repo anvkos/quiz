@@ -6,7 +6,7 @@ class StartGameService
     question = game.choose_question
     return nil unless question_exists?(question)
     game.questions_games.create(question: question)
-    # count games + 1 user.rating....
+    increase_game_counter(game)
     question
   end
 
@@ -16,5 +16,10 @@ class StartGameService
     return true unless question.nil?
     broadcast(:no_questions_quiz)
     false
+  end
+
+  def increase_game_counter(game)
+    rating = Rating.find_or_create_by(user_id: game.user_id, quiz_id: game.quiz_id)
+    rating.increment!(:count_games, 1)
   end
 end

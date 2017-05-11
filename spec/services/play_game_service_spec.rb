@@ -8,6 +8,7 @@ RSpec.describe PlayGameService do
     let(:game) { create(:game, quiz: quiz, user: user) }
     let(:question_one) { create(:question, quiz: quiz) }
     let!(:answer_question_one) { create(:answer, question: question_one) }
+    let!(:rating) { create(:rating, user: user, quiz: quiz) }
 
     before do
       game.questions_games.create(question: question_one)
@@ -46,6 +47,21 @@ RSpec.describe PlayGameService do
 
       it 'no more questions' do
         expect { service.perform(answer_question_one, user) }.to broadcast(:game_finished)
+      end
+    end
+
+    context 'update rating user' do
+      it 'save max score' do
+        game.update!(score: 5)
+        service.perform(answer_question_one, user)
+        expect(rating.reload.max_score).to eq 5
+      end
+
+      it 'no update max score' do
+        rating.update!(max_score: 5)
+        game.update!(score: 3)
+        service.perform(answer_question_one, user)
+        expect(rating.reload.max_score).to eq 5
       end
     end
   end
