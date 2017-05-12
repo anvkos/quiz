@@ -1,0 +1,19 @@
+h2 Ratings
+table.table.table-bordered
+  thead
+    tr
+      th
+        | Quiz
+      th
+        | Place
+      th
+        | Max score
+  tbody
+    - @ratings.each do |rating|
+      tr
+        td
+          = link_to rating.quiz.title, quiz_path(rating.quiz)
+        td
+          = current_user.place_in(rating.quiz)
+        td
+          = rating.max_score

@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
-  devise_for :users
+
   root 'quizzes#index'
+  devise_for :users
+  get 'users/ratings', to: 'users#ratings', as: 'user_ratings'
+
   resources :quizzes do
     resources :questions, shallow: true do
       resources :answers, only: [:update, :destroy]

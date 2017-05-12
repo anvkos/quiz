@@ -12,4 +12,9 @@ class User < ApplicationRecord
   def author?(entity)
     id == entity.user_id
   end
+
+  def place_in(quiz)
+    max_score = ratings.find_by(quiz_id: quiz.id).try(:max_score)
+    1 + Rating.where(quiz_id: quiz).where('max_score > :max_score', max_score: max_score).count
+  end
 end
