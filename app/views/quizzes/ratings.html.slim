@@ -1,0 +1,12 @@
+h2
+  Ratings
+  = @quiz.title
+div.ratings
+  ul class="list-group"
+    - @ratings.each_with_index do |rating, index|
+      li class="list-group-item"
+        span class="badge"
+          = rating.max_score
+        span
+          = index + 1
+        = rating.user.name

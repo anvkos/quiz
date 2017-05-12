@@ -4,7 +4,6 @@ feature 'User ratings', %q{
   in order to see place, max score in quiz.
   As authenticated user.
   I want to be able see my max score in quizTo conduct a quiz
-
 } do
   given(:user) { create(:user) }
 

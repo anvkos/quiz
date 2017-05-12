@@ -1,9 +1,10 @@
 class QuizzesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_quiz, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show, :ratings]
+  before_action :set_quiz, only: [:show, :edit, :update, :destroy, :ratings]
   before_action :build_question, only: [:edit]
 
   authorize_resource
+  skip_authorize_resource only: :ratings
 
   respond_to :js, only: [:update]
 
@@ -35,6 +36,10 @@ class QuizzesController < ApplicationController
   def destroy
     @quiz.destroy
     respond_with(@quiz)
+  end
+
+  def ratings
+    respond_with(@ratings = @quiz.ratings.includes(:user).first_max_score)
   end
 
   private

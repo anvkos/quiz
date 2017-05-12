@@ -239,4 +239,17 @@ RSpec.describe QuizzesController, type: :controller do
       end
     end
   end
+
+  describe 'GET #ratings' do
+    let(:quiz) { create(:quiz) }
+    it "returns http success" do
+      get :ratings, params: { id: quiz }
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'render update template' do
+      get :ratings, params: { id: quiz }
+      expect(response).to render_template :ratings
+    end
+  end
 end

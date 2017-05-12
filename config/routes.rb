@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :questions, shallow: true do
       resources :answers, only: [:update, :destroy]
     end
+    get :ratings, on: :member
   end
   resource :game do
     member do
