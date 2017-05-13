@@ -32,6 +32,12 @@
                 <div v-if="mode == 'finish'">
                     <div>Your score {{ score }}</div>
                     <button class="btn btn-danger btn-block" @click="onStart()">Start quiz</button>
+                    <div class="shared-links">
+                        <button @click="onShareVK()">VK</button>
+                        <button @click="onShareOK()">OK</button>
+                        <button @click="onShareFB()">FB</button>
+                        <button @click="onShareTW()">TW</button>
+                    </div>
                 </div>
 
             </div>
@@ -49,6 +55,14 @@ export default {
             quiz: this.quiz_data.quiz,
             question: {},
             score: 0
+        }
+    },
+    computed: {
+        linkText: function() {
+            return 'I have ' + this.score + ' score in quiz ' + this.quiz.title
+        },
+        url: function() {
+            return window.top.location.href
         }
     },
     methods: {
@@ -91,6 +105,22 @@ export default {
             this.score = 0
             this.question = {}
         },
+        handleLinkClick: function(link) {
+            window.open(link, '', 'width=640,height=480,top=' + ((screen.height - 480) / 2) + ',left=' + ((screen.width - 640) / 2))
+        },
+        onShareVK: function() {
+          this.handleLinkClick('https://vk.com/share.php?url=' + this.url + '&description=' +this.linkText)
+        },
+        onShareTW: function() {
+          this.handleLinkClick('https://twitter.com/intent/tweet?url=' + this.url+ '&text=' + this.linkText)
+        },
+        onShareFB: function() {
+          this.handleLinkClick('https://www.facebook.com/sharer.php?src=sp&u=' + this.url)
+        },
+        onShareOK: function() {
+          this.handleLinkClick('https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl=' + this.url)
+        }
+
     }
 }
 </script>
