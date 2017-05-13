@@ -2,7 +2,8 @@ Rails.application.routes.draw do
 
   root 'quizzes#index'
   devise_for :users
-  get 'users/ratings', to: 'users#ratings', as: 'user_ratings'
+  get 'users/ratings', to: 'users#ratings', as: 'ratings_user'
+  get 'users/quizzes', to: 'users#quizzes', as: 'quizzes_user'
 
   resources :quizzes do
     resources :questions, shallow: true do

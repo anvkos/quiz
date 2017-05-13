@@ -1,0 +1,20 @@
+h2
+  Quizzes
+table.table.table-bordered
+  thead
+    tr
+      th
+        | Quiz
+      th
+        | Users
+      th
+        | Games
+  tbody
+    - @quizzes.each do |quiz|
+      tr
+        td
+          = link_to quiz.title, quiz_path(quiz)
+        td
+          = quiz.count_players
+        td
+          = quiz.count_games

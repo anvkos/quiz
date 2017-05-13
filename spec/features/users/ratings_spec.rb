@@ -11,7 +11,7 @@ feature 'User ratings', %q{
     ratings = []
     5.times { ratings << create(:rating, user: user, max_score: rand(1..100)) }
     sign_in(user)
-    visit user_ratings_path
+    visit ratings_user_path
     5.times do |i|
       expect(page).to have_content ratings[i].quiz.title
       expect(page).to have_content ratings[i].max_score
