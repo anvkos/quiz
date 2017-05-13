@@ -2,16 +2,29 @@ require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
   describe "GET #ratings" do
+    let(:user) { create(:user) }
+    let!(:ratings) { create_list(:rating, 2, user: user) }
+    let!(:ratings_other_user) { create_list(:rating, 2) }
+
     context 'Authenticated user' do
-      sign_in_user
+      before do
+        sign_in user
+        get :ratings
+      end
 
       it "returns http success" do
-        get :ratings
         expect(response).to have_http_status(:success)
       end
 
+      it 'populates an array of user ratings' do
+        expect(assigns(:ratings)).to match_array(ratings)
+      end
+
+      it 'not populates an array of other user ratings' do
+        expect(assigns(:ratings)).to_not match_array(Rating.all)
+      end
+
       it 'render update template' do
-        get :ratings
         expect(response).to render_template :ratings
       end
     end
@@ -37,7 +50,7 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it 'not populates an array of other user quizzes' do
-        expect(assigns(:quizzes)).to_not match_array(quizzes_other_user)
+        expect(assigns(:quizzes)).to_not match_array(Quiz.all)
       end
 
       it 'render update template' do
