@@ -33,6 +33,11 @@ RSpec.describe PlayGameService do
       expect(game.reload.score).to eq score
     end
 
+    it 'create new record questions game' do
+      next_question = create(:question, quiz: quiz)
+      expect{ service.perform(answer_question_one, user) }.to change(QuestionsGame, :count).by(1)
+    end
+
     it 'publishes :game_not_found' do
       other_user = create(:user)
       expect { service.perform(answer_question_one, other_user) }.to broadcast(:game_not_found)

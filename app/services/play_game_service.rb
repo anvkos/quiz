@@ -9,6 +9,7 @@ class PlayGameService
     check_answer(game, answer)
     question = game.choose_question
     finish_game(game) if question.nil?
+    game.questions_games.create(question: question)
     question
   end
 
@@ -34,7 +35,7 @@ class PlayGameService
 
   def finish_game(game)
     rating = Rating.find_by(user_id: game.user_id, quiz_id: game.quiz_id)
-    rating.update(max_score: game.score) if rating.max_score < game.score
+    rating.update(max_score: game.score) if rating.max_score.to_i < game.score
     broadcast(:game_finished, game)
   end
 end

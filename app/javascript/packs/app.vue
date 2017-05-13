@@ -16,6 +16,7 @@
                 </div>
 
                 <div v-if="mode == 'question'">
+                    <div> score: {{ score }} </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title text-center">{{ question.body }}</h3>
@@ -29,7 +30,7 @@
                 </div>
 
                 <div v-if="mode == 'finish'">
-                    <div>Your score {{ statGame.correctedAnswers }}</div>
+                    <div>Your score {{ score }}</div>
                     <button class="btn btn-danger btn-block" @click="onStart()">Start quiz</button>
                 </div>
 
@@ -43,47 +44,53 @@
 export default {
     props: ['quiz_data'],
     data: function () {
-        console.log(this.quiz_data.questions)
         return {
             mode: 'start',
             quiz: this.quiz_data.quiz,
-            questions: this.quiz_data.questions,
             question: {},
-            statGame: {
-                correctedAnswers: 0,
-                currentQuestion: 0,
-                countQuestions: 0
-            }
+            score: 0
         }
     },
     methods: {
         onStart: function() {
             this.resetStat()
-            this.statGame.countQuestions = this.questions.length
-            this.question = this.questions[this.statGame.currentQuestion]
+            this.$http.post('/game/start', { quiz_id: this.quiz.id } )
+                .then(response => {
+                    this.question = {
+                        body: response.data.body,
+                        answers: response.data.answers
+                    }
+                }, response => {
+                    console.log('error')
+                    console.log(response)
+                })
             this.mode = 'question'
-        },
-        nextQuestion: function() {
-            this.statGame.currentQuestion += 1
-            if (this.statGame.currentQuestion == this.statGame.countQuestions) {
-                this.mode = 'finish'
-            } else {
-                this.question = this.questions[this.statGame.currentQuestion]
-            }
         },
         onAnswer: function(answer) {
             if (answer.correct) {
-                this.statGame.correctedAnswers += 1
-            } else {
-                this.statGame.inCorrectedAnswers += 1
+                this.score += 1
             }
-            this.nextQuestion()
+            this.$http.post('/game/check_answer', { answer_id: answer.id } )
+                .then(response => {
+                    var data = response.data
+                    if (data.action != null && data.action == 'finish') {
+                        this.score = data.score
+                        this.mode = 'finish'
+                    } else {
+                        this.question = {
+                            body: data.body,
+                            answers: data.answers
+                        }
+                    }
+                }, response => {
+                    console.log('error')
+                    console.log(response)
+                })
         },
         resetStat: function() {
-            this.statGame.correctedAnswers = 0
-            this.statGame.currentQuestion = 0
-            this.statGame.countQuestions = 0
-        }
+            this.score = 0
+            this.question = {}
+        },
     }
 }
 </script>

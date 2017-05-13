@@ -1,8 +1,7 @@
 <%= content_tag :div,
   id: 'play-quiz',
   data: {
-    quiz: @quiz.to_json(except: [:user_id, :created_at, :updated_at]),
-    questions: @quiz.questions.to_json(except: [:created_at, :updated_at], include: [ answers: { only: [:id, :body, :correct] } ])
+    quiz: @quiz.to_json(except: [:user_id, :created_at, :updated_at])
   } do %>
   <app-quiz :quiz_data="quiz_data()"></app-quiz>
 <% end %>
