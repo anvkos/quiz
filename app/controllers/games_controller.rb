@@ -1,6 +1,4 @@
 class GamesController < ApplicationController
-  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
-
   before_action :authenticate_user!
   before_action :set_quiz, only: [:start]
   before_action :set_answer, only: [:check_answer]
@@ -37,10 +35,6 @@ class GamesController < ApplicationController
   def finish_game(game)
     data = ActiveModelSerializers::SerializableResource.new(game).as_json
     render_success(data, 'finish', 'Game finished')
-  end
-
-  def render_not_found(error)
-    render_error(:not_found, 'Error game', error.message)
   end
 
   def render_error(status, error = 'error', message = 'message')

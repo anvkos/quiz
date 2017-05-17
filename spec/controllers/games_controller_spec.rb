@@ -24,14 +24,6 @@ RSpec.describe GamesController, type: :controller do
     end
 
     context 'returns start game error' do
-      it 'quiz not found' do
-        post :start, params: { quiz_id: 666 }, format: :json
-        data = JSON.parse(response.body)
-        expect(response).to have_http_status :not_found
-        expect(data['error']).to eq 'Error game'
-        expect(data['error_message']).to match "Couldn't find Quiz with"
-      end
-
       it 'quiz has no questions' do
         post :start, params: { quiz_id: quiz.id }, format: :json
         data = JSON.parse(response.body)
