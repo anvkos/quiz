@@ -6,6 +6,6 @@ class Game < ApplicationRecord
 
   def choose_question
     unanswered_questions = quiz.questions.where.not(id: questions)
-    unanswered_questions.sample
+    unanswered_questions.shuffle.sample
   end
 end
