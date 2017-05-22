@@ -4,15 +4,12 @@ RSpec.describe PlayGameService do
   describe '#perform' do
     let!(:service) { PlayGameService.new }
     let(:user) { create(:user) }
-    let(:quiz) { create(:quiz) }
-    let(:game) { create(:game, quiz: quiz, user: user) }
+    let(:quiz) { create(:quiz, created_at: 10.seconds.ago) }
+    let(:game) { create(:game, quiz: quiz, user: user, created_at: 10.seconds.ago) }
     let(:question_one) { create(:question, quiz: quiz) }
     let!(:answer_question_one) { create(:answer, question: question_one) }
     let!(:rating) { create(:rating, user: user, quiz: quiz) }
-
-    before do
-      game.questions_games.create(question: question_one)
-    end
+    let!(:game_question) { game.questions_games.create(question: question_one, created_at: 10.seconds.ago) }
 
     it 'returns next question' do
       question_two = create(:question, quiz: quiz)
@@ -44,10 +41,26 @@ RSpec.describe PlayGameService do
     end
 
     context 'publishes :game_finished' do
-      it 'game already finished' do
-        game.finished = true
-        game.save
-        expect { service.perform(answer_question_one, user) }.to broadcast(:game_finished)
+      context 'there are still questions' do
+        let!(:question_two)  { create(:question, quiz: quiz) }
+
+        it 'game already finished' do
+          game.finished = true
+          game.save
+          expect { service.perform(answer_question_one, user) }.to broadcast(:game_finished)
+        end
+
+        it 'game time expired' do
+          time_limit = 8
+          quiz.update(time_limit: time_limit)
+          expect { service.perform(answer_question_one, user) }.to broadcast(:game_finished)
+        end
+
+        it 'time answer expired' do
+          time_answer = 5
+          quiz.update(time_answer: time_answer)
+          expect { service.perform(answer_question_one, user) }.to broadcast(:game_finished)
+        end
       end
 
       it 'no more questions' do
