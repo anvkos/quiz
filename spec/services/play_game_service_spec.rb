@@ -69,18 +69,37 @@ RSpec.describe PlayGameService do
     end
 
     context 'update rating user' do
-      it 'save max score' do
-        game.update!(score: 5)
-        service.perform(answer_question_one, user)
-        expect(rating.reload.max_score).to eq 5
+      let(:max_score) { 5 }
+
+      before do
+        game.update!(score: max_score)
       end
 
-      it 'no update max score' do
-        rating.update!(max_score: 5)
-        game.update!(score: 3)
+      it 'save max score' do
         service.perform(answer_question_one, user)
-        expect(rating.reload.max_score).to eq 5
+        expect(rating.reload.max_score).to eq max_score
       end
+
+      it 'save max score game over by time_limit' do
+        time_limit = 8
+        quiz.update(time_limit: time_limit)
+        service.perform(answer_question_one, user)
+        expect(rating.reload.max_score).to eq max_score
+      end
+
+      it 'save max score game over by time_answer expired' do
+        time_answer = 5
+        quiz.update(time_answer: time_answer)
+        service.perform(answer_question_one, user)
+        expect(rating.reload.max_score).to eq max_score
+      end
+    end
+
+    it 'no update max score' do
+      rating.update!(max_score: 5)
+      game.update!(score: 3)
+      service.perform(answer_question_one, user)
+      expect(rating.reload.max_score).to eq 5
     end
   end
 end

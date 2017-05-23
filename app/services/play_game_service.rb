@@ -26,17 +26,19 @@ class PlayGameService
       broadcast(:game_finished, game)
       return true
     end
-    if time_game_over?(game) || time_answer_expired?(game)
-      finish_game(game)
-      return true
-    end
-    false
+    time_game_over?(game)
   end
 
   def check_answer(game, answer)
     if answer.correct?
       game.increment!(:score)
     end
+  end
+
+  def time_game_over?(game)
+    return false unless time_limit_expired?(game) || time_answer_expired?(game)
+    finish_game(game)
+    true
   end
 
   def finish_game(game)
@@ -46,7 +48,7 @@ class PlayGameService
     broadcast(:game_finished, game)
   end
 
-  def time_game_over?(game)
+  def time_limit_expired?(game)
     game.quiz.time_limit.positive? && game.created_at.to_i + game.quiz.time_limit.to_i < Time.now.to_i
   end
 
