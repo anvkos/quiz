@@ -6,7 +6,8 @@ class PlayGameService
     game = Game.where(user: user, quiz: quiz).last
     return nil unless game_exists?(game)
     return nil if game_finished?(game)
-    check_answer(game, answer)
+    correct = check_answer(game, answer)
+    return nil if finish_answer_incorrect?(game, correct)
     question = game.choose_question
     finish_game(game) if question.nil?
     game.questions_games.create(question: question)
@@ -30,9 +31,17 @@ class PlayGameService
   end
 
   def check_answer(game, answer)
-    if answer.correct?
-      game.increment!(:score)
+    return false unless answer.correct?
+    game.increment!(:score)
+    true
+  end
+
+  def finish_answer_incorrect?(game, correct)
+    if !correct && game.quiz.no_mistakes?
+      finish_game(game)
+      return true
     end
+    false
   end
 
   def time_game_over?(game)

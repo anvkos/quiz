@@ -61,6 +61,12 @@ RSpec.describe PlayGameService do
           quiz.update(time_answer: time_answer)
           expect { service.perform(answer_question_one, user) }.to broadcast(:game_finished)
         end
+
+        it 'incorrect answer' do
+          no_mistakes = true
+          quiz.update(no_mistakes: no_mistakes)
+          expect { service.perform(answer_question_one, user) }.to broadcast(:game_finished)
+        end
       end
 
       it 'no more questions' do
@@ -90,6 +96,13 @@ RSpec.describe PlayGameService do
       it 'save max score game over by time_answer expired' do
         time_answer = 5
         quiz.update(time_answer: time_answer)
+        service.perform(answer_question_one, user)
+        expect(rating.reload.max_score).to eq max_score
+      end
+
+      it 'save max score - no_mistakes=true' do
+        no_mistakes = true
+        quiz.update(no_mistakes: no_mistakes)
         service.perform(answer_question_one, user)
         expect(rating.reload.max_score).to eq max_score
       end
