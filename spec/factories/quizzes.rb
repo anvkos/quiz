@@ -12,6 +12,15 @@ FactoryGirl.define do
       description nil
       rules nil
     end
+
+    trait :with_questions do
+      ignore do
+        number_questions 5
+      end
+
+      after(:create) do |quiz, evaluator|
+        create_list(:question, evaluator.number_questions, quiz: quiz)
+      end
+    end
   end
 end
-
