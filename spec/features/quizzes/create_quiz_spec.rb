@@ -15,6 +15,10 @@ feature 'Create quiz', %q{
     fill_in 'Rules', with: 'rules quiz'
     fill_in 'Starts on', with: Time.now
     fill_in 'Ends on', with: Time.now
+    fill_in 'Once per', with: 1.days.to_i
+    fill_in 'Time limit', with: 15.minutes.to_i
+    fill_in 'Time answer', with: 15
+    check 'No mistakes'
     click_on 'Create'
 
     expect(page).to have_content 'Quiz was successfully created.'

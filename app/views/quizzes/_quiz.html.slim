@@ -1,13 +1,34 @@
 .quiz
-  h2
-    = @quiz.title
-  p
-    = @quiz.description
-  p
-    span = @quiz.starts_on
-    span = @quiz.ends_on
-  div
-    = @quiz.rules
+  .col-md-12
+    h2
+      = @quiz.title
+    .col-md-9
+      p
+        = @quiz.description
+      div
+        = @quiz.rules
+    .col-md-3
+      p
+        | Starts on:
+        = @quiz.starts_on
+      p
+        | Ends on:
+        = @quiz.ends_on
+      p
+        | Once per:
+        = @quiz.once_per
+      p
+        | Time limit:
+        = @quiz.time_limit
+      p
+        | Time answer:
+        = @quiz.time_answer
+      p
+        | No mistakes:
+        - if @quiz.no_mistakes?
+            |  Yes
+        - else
+            |  No
   .quiz-edit
     = link_to 'Edit', '', class: 'edit-quiz-link text-success'
     = render 'form_edit', quiz: quiz

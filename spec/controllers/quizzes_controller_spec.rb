@@ -123,12 +123,18 @@ RSpec.describe QuizzesController, type: :controller do
               description: 'updated description',
               rules: 'updated rules',
               starts_on: Time.zone.now + 1.hours,
-              ends_on: Time.zone.now + 1.day
+              ends_on: Time.zone.now + 1.day,
+              once_per: 1.days.to_i,
+              time_limit: 15.minutes.to_i,
+              time_answer: 15,
+              no_mistakes: true
             }
             patch :update, params: { id: quiz, quiz: updated, format: :js }
             quiz.reload
-            updated.each do |attr, value|
-              expect(quiz.send(attr)).to eq value.to_s
+            expect(quiz.starts_on).to eq updated[:starts_on].to_s
+            expect(quiz.ends_on).to eq updated[:ends_on].to_s
+            updated.except(:starts_on, :ends_on).each do |attr, value|
+              expect(quiz.send(attr)).to eq value
             end
           end
 

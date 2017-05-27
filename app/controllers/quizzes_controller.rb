@@ -45,7 +45,17 @@ class QuizzesController < ApplicationController
   private
 
   def quiz_params
-    params.require(:quiz).permit(:title, :description, :rules, :starts_on, :ends_on)
+    params.require(:quiz).permit(
+      :title,
+      :description,
+      :rules,
+      :starts_on,
+      :ends_on,
+      :once_per,
+      :time_limit,
+      :time_answer,
+      :no_mistakes
+    )
   end
 
   def set_quiz

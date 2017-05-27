@@ -1,3 +1,5 @@
-= form_for quiz, remote: true, html: { id: 'edit-quiz' } do |f|
-  = render 'form_fields', f: f, quiz: quiz
-  = f.submit 'Save', class: 'btn btn-success'
+= form_for quiz, remote: true, html: { id: 'edit-quiz', class: 'form-horizontal' } do |f|
+  .col-md-12
+    = render 'form_fields', f: f, quiz: quiz
+  .col-md-3.col-md-offset-9
+    = f.submit 'Save', class: 'btn btn-success btn-block'

@@ -37,24 +37,31 @@ feature 'Quiz editing', %q{
         end
       end
 
-      scenario 'try to edit question', js: true do
+      scenario 'try to edit quiz', js: true do
+        quiz = create(:quiz, user: user, once_per: 7200, time_limit: 3600, time_answer: 30)
         updated = {
           title: 'updated title',
           description: 'updated description',
           rules: 'updated rules',
           starts_on: Time.zone.now + 1.hours,
-          ends_on: Time.zone.now + 1.day
+          ends_on: Time.zone.now + 1.day,
+          once_per: 1.days.to_i,
+          time_limit: 15.minutes.to_i,
+          time_answer: 15,
+          no_mistakes: true
         }
         visit edit_quiz_path(quiz)
         click_on 'Edit'
         within '.quiz' do
-          updated.each { |field, value| fill_in "quiz[#{field}]", with: value }
+          updated.except(:no_mistakes).each { |field, value| fill_in "quiz[#{field}]", with: value }
+          check 'No mistakes'
           click_on 'Save'
         end
-        updated.each do |attr, value|
+        updated.except(:no_mistakes).each do |attr, value|
           expect(page).to_not have_content quiz.send(attr)
           expect(page).to have_content value
         end
+        expect(page).to have_content 'No mistakes: Yes'
         within '.quiz-edit' do
           expect(page).to_not have_selector 'input'
           expect(page).to_not have_selector 'textarea'

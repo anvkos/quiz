@@ -6,6 +6,10 @@ FactoryGirl.define do
     starts_on { Time.now }
     ends_on { Time.now }
     user
+    once_per 0
+    time_limit 0
+    time_answer 0
+    no_mistakes false
 
     trait :invalid do
       title nil

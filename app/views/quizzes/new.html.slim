@@ -1,6 +1,7 @@
 <h2>Add new quiz</h2>
 
 = form_for @quiz do |f|
-  = render 'form_fields', f: f, quiz: @quiz
-  p
-    = f.submit 'Create', class: 'btn btn-primary'
+  .col-md-12
+    = render 'form_fields', f: f, quiz: @quiz
+  .col-md-3.col-md-offset-9
+    = f.submit 'Create', class: 'btn btn-primary btn-block'
