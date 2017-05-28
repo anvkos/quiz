@@ -62,8 +62,13 @@ RSpec.describe GamesController, type: :controller do
 
       it 'retuns question' do
         data = JSON.parse(response.body)
-        expect(data['id']).to eq questions.last.id
-        expect(data['body']).to eq questions.last.body
+        expect(data['question']['id']).to eq questions.last.id
+        expect(data['question']['body']).to eq questions.last.body
+      end
+
+      it 'returns score' do
+        data = JSON.parse(response.body)
+        expect(data['score']).to eq game.score
       end
     end
 

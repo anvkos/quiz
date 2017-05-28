@@ -11,7 +11,6 @@ class PlayGameService
     question = game.choose_question
     finish_game(game) if question.nil?
     game.questions_games.create(question: question)
-    question
   end
 
   private

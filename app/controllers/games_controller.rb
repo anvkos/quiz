@@ -15,8 +15,8 @@ class GamesController < ApplicationController
     service = PlayGameService.new
     service.on(:game_not_found) { render_error(:not_found, 'Error game', "Game not found") }
     service.on(:game_finished) { |game| finish_game(game) }
-    question = service.perform(@answer, current_user)
-    render json: question, status: :accepted unless question.nil?
+    question_game = service.perform(@answer, current_user)
+    render json: { question: question_game.question, score: question_game.game.score }, status: :accepted unless question_game.nil?
   end
 
   private

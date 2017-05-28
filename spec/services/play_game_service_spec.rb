@@ -11,9 +11,10 @@ RSpec.describe PlayGameService do
     let!(:rating) { create(:rating, user: user, quiz: quiz) }
     let!(:game_question) { game.questions_games.create(question: question_one, created_at: 10.seconds.ago) }
 
-    it 'returns next question' do
+    it 'returns next question game' do
       question_two = create(:question, quiz: quiz)
-      expect(service.perform(answer_question_one, user)).to eq question_two
+      question_game = service.perform(answer_question_one, user)
+      expect(question_game.question).to eq question_two
     end
 
     it 'score are increased by 1' do
