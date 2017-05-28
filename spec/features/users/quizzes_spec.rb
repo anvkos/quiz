@@ -22,4 +22,22 @@ feature 'User quizzes', %q{
       expect(page).to have_content count_games
     end
   end
+
+  scenario 'User see result games training quiz' do
+    quiz = create(:quiz, user: user, once_per: 1.hours)
+    users = create_list(:user, 5)
+    games = []
+    users.each_with_index do |user, index|
+      i = index + 1
+      games << create(:game, quiz: quiz, user: user, created_at: i.hours.ago, score: i * 100)
+     end
+    sign_in(user)
+    visit quizzes_user_path
+    games.each do |game|
+      expect(page).to have_content game.quiz.title
+      expect(page).to have_content game.user.name
+      expect(page).to have_content game.created_at
+      expect(page).to have_content game.score
+    end
+  end
 end

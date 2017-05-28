@@ -5,6 +5,7 @@ class Game < ApplicationRecord
   has_many :questions, through: :questions_games
 
   scope :training, -> { joins(:quiz).where('quizzes.once_per > 0').order(:created_at) }
+  scope :for_quizzes, ->(_quizzes) { joins(:quiz).where(quiz: _quizzes) }
 
   def choose_question
     unanswered_questions = quiz.questions.where.not(id: questions)

@@ -30,6 +30,21 @@ RSpec.describe Game, type: :model do
     end
   end
 
+  describe '.for_quizzes' do
+    it 'returns game present quizzes' do
+      quizzes = create_list(:quiz, 5)
+      games_all = []
+      quizzes.each { |quiz| games_all << create(:game, quiz: quiz) }
+      expected_games = [games_all.first, games_all.last]
+      other_games = games_all - expected_games
+      games = Game.for_quizzes([quizzes.last, quizzes.first])
+      games.each do |game|
+        expect(games).to match_array(expected_games)
+        expect(games).not_to match_array(other_games)
+      end
+    end
+  end
+
   describe '#choose_question' do
     let(:quiz) { create(:quiz) }
     let(:game) { create(:game, quiz: quiz) }

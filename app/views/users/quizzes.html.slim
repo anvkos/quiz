@@ -18,3 +18,26 @@ table.table.table-bordered
           = quiz.count_players
         td
           = quiz.count_games
+h2 Training quiz
+table.table.table-bordered
+  thead
+    tr
+      th
+        | Quiz
+      th
+        | user
+      th
+        | Date game
+      th
+        | Score
+  tbody
+    - @games.each do |game|
+      tr
+        td
+          = link_to game.quiz.title, quiz_path(game.quiz)
+        td
+          = game.user.name
+        td
+          = game.created_at
+        td
+          = game.score

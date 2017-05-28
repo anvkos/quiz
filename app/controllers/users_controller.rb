@@ -7,6 +7,7 @@ class UsersController < ApplicationController
   end
 
   def quizzes
-    respond_with(@quizzes = current_user.quizzes)
+    @quizzes = current_user.quizzes
+    @games = Game.for_quizzes(@quizzes)
   end
 end
