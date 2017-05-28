@@ -31,6 +31,16 @@ RSpec.describe GamesController, type: :controller do
         expect(data['error']).to eq 'Error start game'
         expect(data['error_message']).to eq 'Quiz has no questions'
       end
+
+      it 'user already play' do
+        quiz = create(:quiz, :with_questions, once_per: 1.hours)
+        create(:game, quiz: quiz, user: user)
+        post :start, params: { quiz_id: quiz.id }, format: :json
+        data = JSON.parse(response.body)
+        expect(response).to have_http_status :forbidden
+        expect(data['error']).to eq 'Error start game'
+        expect(data['error_message']).to eq 'You play too often'
+      end
     end
   end
 

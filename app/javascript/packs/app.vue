@@ -11,12 +11,16 @@
                 <div v-if="mode == 'start'">
                     <div>
                         {{ quiz.description }}
+                        <div v-if="error" class="text-danger">
+                            {{ error.message }}
+                        </div>
                         <button class="btn btn-danger btn-block" @click="onStart()">Start quiz</button>
                     </div>
                 </div>
 
                 <div v-if="mode == 'question'">
                     <div> score: {{ score }} </div>
+                    <div> time: {{ time_answer }} </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title text-center">{{ question.body }}</h3>
@@ -54,7 +58,10 @@ export default {
             mode: 'start',
             quiz: this.quiz_data.quiz,
             question: {},
-            score: 0
+            score: 0,
+            error: {},
+            time_answer: this.quiz_data.quiz.time_answer,
+            timerAnswer: null
         }
     },
     computed: {
@@ -74,11 +81,14 @@ export default {
                         body: response.data.body,
                         answers: response.data.answers
                     }
+                    this.mode = 'question'
+                    this.startAnswerTimer();
                 }, response => {
-                    console.log('error')
-                    console.log(response)
+                    this.error = {
+                        error: response.data.error,
+                        message: response.data.error_message
+                    }
                 })
-            this.mode = 'question'
         },
         onAnswer: function(answer) {
             if (answer.correct) {
@@ -90,11 +100,13 @@ export default {
                     if (data.action != null && data.action == 'finish') {
                         this.score = data.score
                         this.mode = 'finish'
+                        clearInterval(this.timerAnswer)
                     } else {
                         this.question = {
                             body: data.body,
                             answers: data.answers
                         }
+                        this.resetTimerAnswer()
                     }
                 }, response => {
                     console.log('error')
@@ -104,6 +116,23 @@ export default {
         resetStat: function() {
             this.score = 0
             this.question = {}
+            this.error = {}
+        },
+        startAnswerTimer: function() {
+            this.time_answer = this.quiz_data.quiz.time_answer
+            if (this.time_answer > 0) {
+                this.timerAnswer = setInterval(() => {
+                    this.time_answer = this.time_answer - 1
+                    if (this.time_answer == 0) {
+                        clearInterval(this.timerAnswer)
+                    }
+                }, 1000)
+            }
+        },
+        resetTimerAnswer: function() {
+            clearInterval(this.timerAnswer)
+            this.time_answer = this.quiz_data.quiz.time_answer
+            this.startAnswerTimer();
         },
         handleLinkClick: function(link) {
             window.open(link, '', 'width=640,height=480,top=' + ((screen.height - 480) / 2) + ',left=' + ((screen.width - 640) / 2))

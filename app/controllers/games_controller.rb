@@ -6,6 +6,7 @@ class GamesController < ApplicationController
   def start
     service = StartGameService.new
     service.on(:no_questions_quiz) { render_error(:bad_request, 'Error start game', "Quiz has no questions") }
+    service.on(:error_frequent_game) { render_error(:forbidden, 'Error start game', "You play too often") }
     question = service.perform(@quiz, current_user)
     render json: question, status: :created unless question.nil?
   end
