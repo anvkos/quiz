@@ -17,3 +17,23 @@ table.table.table-bordered
           = current_user.place_in(rating.quiz)
         td
           = rating.max_score
+
+h2 Training quiz
+table.table.table-bordered
+  thead
+    tr
+      th
+        | Quiz
+      th
+        | Date game
+      th
+        | Score
+  tbody
+    - @games.each do |game|
+      tr
+        td
+          = link_to game.quiz.title, quiz_path(game.quiz)
+        td
+          = game.created_at
+        td
+          = game.score

@@ -4,6 +4,8 @@ class Game < ApplicationRecord
   has_many :questions_games
   has_many :questions, through: :questions_games
 
+  scope :training, -> { joins(:quiz).where('quizzes.once_per > 0').order(:created_at) }
+
   def choose_question
     unanswered_questions = quiz.questions.where.not(id: questions)
     unanswered_questions.shuffle.sample

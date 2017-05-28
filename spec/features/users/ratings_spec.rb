@@ -17,4 +17,17 @@ feature 'User ratings', %q{
       expect(page).to have_content ratings[i].max_score
     end
   end
+
+  scenario 'sees his game result in the trining quiz' do
+    quiz = create(:quiz, user: user, once_per: 1.hours)
+    games = []
+    1.upto(5) { |i| games << create(:game, quiz: quiz, user: user, created_at: i.hours.ago, score: i * 100) }
+    sign_in(user)
+    visit ratings_user_path
+    5.times do |i|
+      expect(page).to have_content games[i].quiz.title
+      expect(page).to have_content games[i].created_at
+      expect(page).to have_content games[i].score
+    end
+  end
 end

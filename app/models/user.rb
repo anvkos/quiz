@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :quizzes, dependent: :destroy
   has_many :ratings, dependent: :destroy
+  has_many :games, dependent: :destroy
 
   validates :name, presence: true
 

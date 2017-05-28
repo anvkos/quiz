@@ -7,6 +7,29 @@ RSpec.describe Game, type: :model do
     it { should have_many(:questions_games) }
   end
 
+  describe '.training' do
+    let(:quiz) { create(:quiz, once_per: 10) }
+
+    it 'returns games quiz with once_per' do
+      games = create_list(:game, 5, quiz: quiz)
+      other_games = create_list(:game, 5)
+      training_games = Game.training
+      expect(training_games).to match_array(games)
+      expect(training_games).not_to match_array(other_games)
+    end
+
+    it 'order by asc created_at game' do
+      games = create_list(:game, 5, quiz: quiz)
+      first = games[3]
+      second = games[4]
+      first.update(created_at: 2.hours.ago)
+      second.update(created_at: 1.hours.ago)
+      training_games = Game.training
+      expect(training_games.first).to eq first
+      expect(training_games.second).to eq second
+    end
+  end
+
   describe '#choose_question' do
     let(:quiz) { create(:quiz) }
     let(:game) { create(:game, quiz: quiz) }
