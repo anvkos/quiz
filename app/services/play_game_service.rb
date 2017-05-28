@@ -32,8 +32,17 @@ class PlayGameService
 
   def check_answer(game, answer)
     return false unless answer.correct?
-    game.increment!(:score)
+    score = calculate_score(game)
+    game.increment!(:score, score)
     true
+  end
+
+  def calculate_score(game)
+    return 1 unless game.quiz.time_answer.positive?
+    max_score = game.quiz.time_answer.to_i
+    question = game.questions_games.last
+    score = max_score - (Time.now.to_i - question.created_at.to_i)
+    [score, 1].max
   end
 
   def finish_answer_incorrect?(game, correct)

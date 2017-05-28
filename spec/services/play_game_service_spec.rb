@@ -30,6 +30,35 @@ RSpec.describe PlayGameService do
       expect(game.reload.score).to eq score
     end
 
+    context 'score depend on speed answer' do
+      before do
+        answer_question_one.correct = true
+        answer_question_one.save
+        @score = game.score
+      end
+
+      it 'speedy answer' do
+        quiz.update(time_answer: 30)
+        service.perform(answer_question_one, user)
+        expect(game.reload.score).to eq @score + 20
+      end
+
+      it 'slow answer' do
+        quiz.update(time_answer: 10)
+        service.perform(answer_question_one, user)
+        expect(game.reload.score).to eq @score + 1
+      end
+    end
+
+    it 'score depend on speed answer ' do
+      quiz.update(time_answer: 30)
+      answer_question_one.correct = true
+      answer_question_one.save
+      score = game.score
+      service.perform(answer_question_one, user)
+      expect(game.reload.score).to eq score + 20
+    end
+
     it 'create new record questions game' do
       next_question = create(:question, quiz: quiz)
       expect{ service.perform(answer_question_one, user) }.to change(QuestionsGame, :count).by(1)
