@@ -9,7 +9,10 @@ class PlayGameService
     correct = check_answer(game, answer)
     return nil if finish_answer_incorrect?(game, correct)
     question = game.choose_question
-    finish_game(game) if question.nil?
+    if question.nil?
+      finish_game(game)
+      return nil
+    end
     game.questions_games.create(question: question)
   end
 

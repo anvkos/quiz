@@ -5,18 +5,18 @@ class GamesController < ApplicationController
 
   def start
     service = StartGameService.new
-    service.on(:no_questions_quiz) { render_error(:bad_request, 'Error start game', "Quiz has no questions") }
-    service.on(:error_frequent_game) { render_error(:forbidden, 'Error start game', "You play too often") }
+    service.on(:no_questions_quiz) { render_error(:bad_request, 'Error start game', 'Quiz has no questions') }
+    service.on(:error_frequent_game) { render_error(:forbidden, 'Error start game', 'You play too often') }
     question = service.perform(@quiz, current_user)
     render json: question, status: :created unless question.nil?
   end
 
   def check_answer
     service = PlayGameService.new
-    service.on(:game_not_found) { render_error(:not_found, 'Error game', "Game not found") }
+    service.on(:game_not_found) { render_error(:not_found, 'Error game', 'Game not found') }
     service.on(:game_finished) { |game| finish_game(game) }
-    question_game = service.perform(@answer, current_user)
-    render json: { question: question_game.question, score: question_game.game.score }, status: :accepted unless question_game.nil?
+    @questions_game = service.perform(@answer, current_user)
+    render json: @questions_game, include: ['question.answers'], status: :accepted unless @questions_game.nil?
   end
 
   private

@@ -91,9 +91,6 @@ export default {
                 })
         },
         onAnswer: function(answer) {
-            if (answer.correct) {
-                this.score += 1
-            }
             this.$http.post('/game/check_answer', { answer_id: answer.id } )
                 .then(response => {
                     var data = response.data
@@ -103,9 +100,10 @@ export default {
                         clearInterval(this.timerAnswer)
                     } else {
                         this.question = {
-                            body: data.body,
-                            answers: data.answers
+                            body: data.question.body,
+                            answers: data.question.answers
                         }
+                        this.score = data.score
                         this.resetTimerAnswer()
                     }
                 }, response => {

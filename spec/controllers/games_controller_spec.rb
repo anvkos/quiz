@@ -51,6 +51,7 @@ RSpec.describe GamesController, type: :controller do
       let!(:questions) { create_list(:question, 2, quiz: quiz) }
       let!(:answer) { create(:answer, question: questions.first) }
       let!(:questions_game) { create(:questions_game, game: game, question: questions.first) }
+      let!(:answers) { create_list(:answer, 4, question: questions.last) }
 
       before do
         post :check_answer, params: { answer_id: answer.id }, format: :json
@@ -60,10 +61,20 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to have_http_status :accepted
       end
 
-      it 'retuns question' do
-        data = JSON.parse(response.body)
-        expect(data['question']['id']).to eq questions.last.id
-        expect(data['question']['body']).to eq questions.last.body
+      %w(id body).each do |attr|
+        it "contains #{attr} question" do
+          expect(response.body).to be_json_eql(questions.last.send(attr.to_sym).to_json).at_path("question/#{attr}")
+        end
+      end
+
+      it 'returns list question answers' do
+        expect(response.body).to have_json_size(4).at_path('question/answers')
+      end
+
+      %w(id body correct).each do |attr|
+        it "contains #{attr} answer" do
+          expect(response.body).to be_json_eql(answers.first.send(attr.to_sym).to_json).at_path("question/answers/0/#{attr}")
+        end
       end
 
       it 'returns score' do
