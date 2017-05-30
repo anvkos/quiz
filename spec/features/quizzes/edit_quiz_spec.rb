@@ -38,7 +38,7 @@ feature 'Quiz editing', %q{
       end
 
       scenario 'try to edit quiz', js: true do
-        quiz = create(:quiz, user: user, once_per: 7200, time_limit: 3600, time_answer: 30)
+        quiz = create(:quiz, user: user, once_per: 7200, time_limit: 3600, time_answer: 312)
         updated = {
           title: 'updated title',
           description: 'updated description',

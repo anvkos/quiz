@@ -71,6 +71,7 @@ group :test do
   gem 'rails-controller-testing'
   gem 'launchy'
   gem 'capybara-webkit'
+  gem 'capybara-email'
   gem 'database_cleaner'
   gem 'simplecov', require: false
   gem 'wisper-rspec', require: false

@@ -15,7 +15,12 @@ feature 'User sign up', %q{
     fill_in 'Password', with: '123456'
     fill_in 'Password confirmation', with: '123456'
     click_button 'Sign up'
-    expect(page).to have_content 'Welcome! You have signed up successfully.'
-    expect(current_path).to eq root_path
+    expect(page).to have_content 'A message with a confirmation link has been sent to your email address'
+    expect(page).to have_content 'Please follow the link to activate your account.'
+
+    open_email(registration_email)
+    current_email.click_link 'Confirm my account'
+    expect(page).to have_content 'Your email address has been successfully confirmed.'
+    expect(current_path).to eq new_user_session_path
   end
 end
