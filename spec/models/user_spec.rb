@@ -85,6 +85,7 @@ RSpec.describe User, type: :model do
 
       context 'user already exists' do
         let!(:user) { create(:user, email: temporary_email) }
+
         it 'does not create new user' do
           expect { User.find_for_oauth(auth) }.to_not change(User, :count)
         end
@@ -106,7 +107,7 @@ RSpec.describe User, type: :model do
 
         it 'returns the user with not verified email' do
           user = User.find_for_oauth(auth)
-          expect(user.email_temporary?).to be_falsey
+          expect(user.email_temporary?).to be_truthy
         end
       end
 
@@ -126,7 +127,7 @@ RSpec.describe User, type: :model do
 
         it 'returns the user with not verified email' do
           user = User.find_for_oauth(auth)
-          expect(user.email_temporary?).to be_falsey
+          expect(user.email_temporary?).to  be_truthy
         end
 
         it 'creates authorization for user' do
@@ -145,14 +146,13 @@ RSpec.describe User, type: :model do
   end
 
   describe '#email_temporary?' do
-    let!(:user) { create(:user) }
-
     it 'returns true' do
+      user = create(:user, email: 'temporary@email-provider-uid.com')
       expect(user.email_temporary?).to be_truthy
     end
 
     it 'returns false' do
-      user.email = 'temporary@email-provider-uid.com'
+      user = create(:user)
       expect(user.email_temporary?).to be_falsey
     end
   end

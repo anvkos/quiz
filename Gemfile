@@ -42,6 +42,7 @@ gem 'active_model_serializers'
 gem 'wisper'
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'omniauth-vkontakte'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

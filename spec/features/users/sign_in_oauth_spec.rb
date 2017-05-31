@@ -26,17 +26,40 @@ feature 'Sign in OAuth', %q{
     end
   end
 
+  context 'provider not received email' do
+    scenario 'sign in through vkontakte' do
+      email = 'email@example.test'
+      OmniAuth.config.add_mock(:vkontakte, uid: '123456')
+      visit new_user_session_path
+      click_on 'Sign in with Vkontakte'
+
+      expect(page).to have_content 'For complete the registration your need to confirm email!'
+      expect(page).to have_content 'Send confirmation instructions'
+
+      fill_in 'Email', with: email
+      click_on 'Send confirmation instructions'
+      open_email(email)
+      current_email.click_link 'Confirm my account'
+
+      expect(page).to have_content 'Your email address has been successfully confirmed.'
+
+      click_on 'Sign in with Vkontakte'
+      expect(page).to have_content 'Successfully authenticated from vkontakte account.'
+      expect(current_path).to eq root_path
+    end
+  end
+
   scenario 'email not confirmed' do
     email = 'email@example.test'
-    OmniAuth.config.add_mock(:facebook, uid: '123456')
+    OmniAuth.config.add_mock(:vkontakte, uid: '123456')
     visit new_user_session_path
-    click_on 'Sign in with Facebook'
+    click_on 'Sign in with Vkontakte'
 
     fill_in 'Email', with: email
     click_on 'Send confirmation instructions'
 
     visit new_user_session_path
-    click_on 'Sign in with Facebook'
+    click_on 'Sign in with Vkontakte'
     expect(page).to have_content 'For complete the registration your need to confirm email!'
     expect(page).to have_content 'Send confirmation instructions'
   end

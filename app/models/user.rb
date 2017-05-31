@@ -1,13 +1,13 @@
 class User < ApplicationRecord
   TEMPORARY_EMAIL_PREFIX = 'temporary@email'.freeze
   TEMPORARY_EMAIL_REGEX = /\Atemporary@email/
-  TEMPORARY_NAME = 'User_name'.freeze
+  TEMPORARY_NAME = 'user_temporary'.freeze
 
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable,
-         omniauth_providers: [:facebook]
+         omniauth_providers: [:facebook, :vkontakte]
 
   has_many :quizzes, dependent: :destroy
   has_many :ratings, dependent: :destroy
@@ -25,8 +25,9 @@ class User < ApplicationRecord
 
     user = User.where(email: email).first
     unless user
+      username = "#{TEMPORARY_NAME}-#{auth.provider}-#{auth.uid}"
       password = Devise.friendly_token[0, 20]
-      user = User.new(name: TEMPORARY_NAME, email: email, password: password, password_confirmation: password)
+      user = User.new(name: username, email: email, password: password, password_confirmation: password)
       user.skip_confirmation_notification! if user.email_temporary?
       user.save!
     end
@@ -39,7 +40,7 @@ class User < ApplicationRecord
   end
 
   def email_temporary?
-    email && email !~ TEMPORARY_EMAIL_REGEX
+    email && email =~ TEMPORARY_EMAIL_REGEX
   end
 
   def author?(entity)
