@@ -12,7 +12,7 @@ feature 'Sign in OAuth', %q{
       visit new_user_session_path
       click_on 'Sign in with Facebook'
       expect(page).to have_content 'For complete the registration your need to confirm email!'
-      expect(page).to have_content 'Send confirmation instructions'
+      expect(page).to have_content 'Confirm your email'
 
       fill_in 'Email', with: received_email
       click_on 'Send confirmation instructions'
@@ -34,7 +34,7 @@ feature 'Sign in OAuth', %q{
       click_on 'Sign in with Vkontakte'
 
       expect(page).to have_content 'For complete the registration your need to confirm email!'
-      expect(page).to have_content 'Send confirmation instructions'
+      expect(page).to have_content 'Confirm your email'
 
       fill_in 'Email', with: email
       click_on 'Send confirmation instructions'
@@ -44,7 +44,7 @@ feature 'Sign in OAuth', %q{
       expect(page).to have_content 'Your email address has been successfully confirmed.'
 
       click_on 'Sign in with Vkontakte'
-      expect(page).to have_content 'Successfully authenticated from vkontakte account.'
+      expect(page).to have_content 'Successfully authenticated from Vkontakte account.'
       expect(current_path).to eq root_path
     end
   end
@@ -61,6 +61,16 @@ feature 'Sign in OAuth', %q{
     visit new_user_session_path
     click_on 'Sign in with Vkontakte'
     expect(page).to have_content 'For complete the registration your need to confirm email!'
-    expect(page).to have_content 'Send confirmation instructions'
+    expect(page).to have_content 'Confirm your email'
+  end
+
+  scenario 'confirmed email is already in use' do
+    user = create(:user)
+    OmniAuth.config.add_mock(:vkontakte, uid: '123456')
+    visit new_user_session_path
+    click_on 'Sign in with Vkontakte'
+    fill_in 'Email', with: user.email
+    click_on 'Send confirmation instructions'
+    expect(page).to have_content 'Email already in use!'
   end
 end

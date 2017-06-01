@@ -5,5 +5,9 @@ FactoryGirl.define do
     password { '123456' }
     password_confirmation { '123456' }
     confirmed_at Time.now
+
+    trait :unconfirmed do
+      confirmed_at nil
+    end
   end
 end

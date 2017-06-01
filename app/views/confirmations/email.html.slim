@@ -1,0 +1,13 @@
+div.col-md-5.col-md-offset-4
+  h2 Confirm your email
+  = form_for(@user, url: confirmation_email_path(), html: { method: "patch"}) do |f|
+    - if @user.errors.any?
+      div.text-danger
+        - @user.errors.full_messages.each do |msg|
+          = msg
+    = hidden_field_tag :token, @user.confirmation_token
+    div.form-group
+      = f.label :email
+      = f.email_field :email, autofocus: true, value: '', class: 'form-control'
+    div.form-group
+      = f.submit 'Send confirmation instructions', class: 'btn btn-primary'

@@ -17,7 +17,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       set_flash_message(:notice, :success, kind: auth.provider.capitalize) if is_navigational_format?
     else
       flash[:notice] = 'For complete the registration your need to confirm email!'
-      render 'devise/confirmations/new', user: @user
+      render 'confirmations/email', user: @user
     end
   end
 end
