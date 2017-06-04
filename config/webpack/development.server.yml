@@ -2,8 +2,10 @@
 
 default: &default
   enabled: true
-  host: localhost
-  port: 8080
+  # host: localhost
+  # port: 8080
+  host: dev-quiz-anvkos.c9users.io
+  port: 8081
 
 development:
   <<: *default
