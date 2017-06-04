@@ -28,7 +28,8 @@ class User < ApplicationRecord
       username = "#{TEMPORARY_NAME}-#{auth.provider}-#{auth.uid}"
       password = Devise.friendly_token[0, 20]
       user = User.new(name: username, email: email, password: password, password_confirmation: password)
-      user.skip_confirmation_notification! if user.email_temporary?
+      # user.skip_confirmation_notification! if user.email_temporary?
+      user.skip_confirmation!
       user.save!
     end
     user.create_authorization(auth)

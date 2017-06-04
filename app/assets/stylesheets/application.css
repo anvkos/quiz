@@ -20,3 +20,8 @@ body {
 }
 
 .hidden { display: none; }
+
+#quiz-vk {
+  width: 800px;
+  height: 600px;
+}

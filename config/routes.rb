@@ -12,6 +12,9 @@ Rails.application.routes.draw do
     end
     get :ratings, on: :member
   end
+
+  get '/widgets/:quiz_id/vkontakte', to: 'widgets#vkontakte', as: :widget_vkontakte
+
   resource :game do
     member do
       post :start
