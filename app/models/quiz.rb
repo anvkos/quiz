@@ -2,6 +2,7 @@ class Quiz < ApplicationRecord
   belongs_to :user
   has_many :questions, dependent: :destroy
   has_many :ratings, dependent: :destroy
+  has_many :quiz_apps, dependent: :destroy
 
   validates :title, :description, :rules, presence: true
 
