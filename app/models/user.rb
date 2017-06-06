@@ -16,7 +16,7 @@ class User < ApplicationRecord
 
   validates :name, presence: true
 
-  def self.find_for_oauth(auth)
+  def self.find_for_oauth(auth, guest = false)
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
 
@@ -28,8 +28,8 @@ class User < ApplicationRecord
       username = "#{TEMPORARY_NAME}-#{auth.provider}-#{auth.uid}"
       password = Devise.friendly_token[0, 20]
       user = User.new(name: username, email: email, password: password, password_confirmation: password)
-      # user.skip_confirmation_notification! if user.email_temporary?
-      user.skip_confirmation!
+      user.skip_confirmation_notification! if !guest && user.email_temporary?
+      user.skip_confirmation! if guest
       user.save!
     end
     user.create_authorization(auth)
