@@ -1,0 +1,17 @@
+= form_for [quiz, quiz_app], remote: true, html: { class: 'form-horizontal' } do |f|
+  .col-sm-offset-2.col-sm-10.quiz-app-errors.text-danger
+  .form-group.quiz-app-fields
+    = f.label :platform, class: 'col-sm-2 control-label'
+    .col-sm-10
+      = f.text_field :platform, class: 'form-control'
+  .form-group.quiz-app-fields
+    = f.label :app_id, 'App id', class: 'col-sm-2 control-label'
+    .col-sm-10
+      = f.text_field :app_id, class: 'form-control'
+  .form-group.quiz-app-fields
+    = f.label :app_secret, class: 'col-sm-2 control-label'
+    .col-sm-10
+      = f.text_field :app_secret, class: 'form-control'
+  .form-group
+    .col-sm-offset-2.col-sm-10
+      = f.submit 'Add new app', class: 'btn btn-success'

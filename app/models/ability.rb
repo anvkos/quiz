@@ -26,5 +26,8 @@ class Ability
     can [:create, :update, :destroy], Answer do |answer|
       user.author?(answer.question.quiz)
     end
+    can [:create], QuizApp do |quiz_app|
+      user.author?(quiz_app.quiz)
+    end
   end
 end

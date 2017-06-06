@@ -1,0 +1,11 @@
+$('.quiz-app-errors').html('');
+<% if @quiz_app.errors.present? %>
+    <% @quiz_app.errors.full_messages.each do |message| %>
+        $('.quiz-app-errors').append('<br><span><%= j message %></span>');
+    <% end %>
+<% else %>
+    $('.quiz-apps .panel-body').append('<%= j render @quiz_app %>');
+    $('#quiz_app_platform').val('');
+    $('#quiz_app_app_id').val('');
+    $('#quiz_app_app_secret').val('');
+<% end %>

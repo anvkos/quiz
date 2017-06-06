@@ -10,10 +10,11 @@ Rails.application.routes.draw do
     resources :questions, shallow: true do
       resources :answers, only: [:update, :destroy]
     end
+    resources :quiz_apps, shallow: true do
+      get :vkontakte, on: :collection
+    end
     get :ratings, on: :member
   end
-
-  get '/widgets/:quiz_id/vkontakte', to: 'widgets#vkontakte', as: :widget_vkontakte
 
   resource :game do
     member do

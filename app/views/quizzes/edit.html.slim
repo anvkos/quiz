@@ -9,3 +9,13 @@
   .panel-heading Questions
   .panel-body
     = render @quiz.questions
+
+.form_add_quiz_app.panel.panel-default
+  .panel-heading Add new quiz App
+  .panel-body
+    = render 'quiz_apps/form', quiz: @quiz, quiz_app: @quiz.quiz_apps.build
+
+.quiz-apps.panel.panel-default
+  .panel-heading Quiz apps
+  .panel-body
+    = render @quiz.quiz_apps

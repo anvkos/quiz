@@ -61,5 +61,13 @@ RSpec.describe Ability do
       it { should be_able_to :destroy, answer, user: user }
       it { should_not be_able_to :destroy, answer_other_user, user: user }
     end
+
+    context 'QuizApp' do
+      it { should be_able_to :create, QuizApp }
+
+      it "Can not create questions for another user's quiz" do
+        expect(subject.can?(:create, quiz_other_user.questions.new)).to be_falsey
+      end
+    end
   end
 end
