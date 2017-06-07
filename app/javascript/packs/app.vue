@@ -15,6 +15,12 @@
                             {{ error.message }}
                         </div>
                         <button class="btn btn-danger btn-block" @click="onStart()">Start quiz</button>
+                        <div class="shared-links">
+                        <button @click="onShareVK()">VK</button>
+                        <button @click="onShareOK()">OK</button>
+                        <button @click="onShareFB()">FB</button>
+                        <button @click="onShareTW()">TW</button>
+                    </div>
                     </div>
                 </div>
 
@@ -66,6 +72,9 @@ export default {
     },
     computed: {
         linkText: function() {
+            if ( this.mode == 'start') {
+                return 'Prove your knowledge in the quiz ' + this.quiz.title
+            }
             return 'I have ' + this.score + ' score in quiz ' + this.quiz.title
         },
         url: function() {
