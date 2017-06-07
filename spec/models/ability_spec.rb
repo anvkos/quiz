@@ -63,11 +63,17 @@ RSpec.describe Ability do
     end
 
     context 'QuizApp' do
+      let(:quiz_app) { create(:quiz_app, quiz: quiz) }
+      let(:quiz_app_other_user) { create(:quiz_app, quiz: quiz_other_user) }
+
       it { should be_able_to :create, QuizApp }
 
-      it "Can not create questions for another user's quiz" do
-        expect(subject.can?(:create, quiz_other_user.questions.new)).to be_falsey
+      it "Can not create quiz_apps for another user's quiz" do
+        expect(subject.can?(:create, quiz_other_user.quiz_apps.new)).to be_falsey
       end
+
+      it { should be_able_to :update, QuizApp }
+      it { should_not be_able_to :update, quiz_app_other_user, user: user }
     end
   end
 end

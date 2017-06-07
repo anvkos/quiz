@@ -1,0 +1,21 @@
+.pull-right
+  = link_to 'Edit', '', class: 'edit-quiz-app-link btn btn-xs btn-success', data: { quiz_app_id: quiz_app.id }
+  = link_to 'Delete', quiz_app, method: :delete, data: { confirm: 'The quiz app will be deleted. You are sure?' }, remote: true, class: 'btn btn-xs btn-danger'
+.quiz-app-edit
+  = form_for quiz_app, remote: true, html: { id: "edit-quiz-app-#{quiz_app.id}", class: 'edit_quiz-app form-horizontal' } do |f|
+    .quiz-app-errors.text-danger
+    .form-group
+      = f.label :platform, 'Platform', class: 'col-sm-2 control-label'
+      .col-sm-9
+        = f.text_field :platform, id: "platform-quiz-app-#{quiz_app.id}", class: 'form-control'
+    .form-group
+      = f.label :app_id, 'App id', class: 'col-sm-2 control-label'
+      .col-sm-9
+        = f.text_field :app_id, id: "app-id-quiz-app-#{quiz_app.id}", class: 'form-control'
+    .form-group
+      = f.label :app_secret, 'App secret', class: 'col-sm-2 control-label'
+      .col-sm-9
+        = f.text_field :app_secret, id: "app-secret-quiz-app-#{quiz_app.id}", class: 'form-control'
+    .form-group
+      .col-sm-1
+        = f.submit 'Save', class: 'btn btn-default btn-sm'

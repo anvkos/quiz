@@ -1,0 +1,8 @@
+$('.quiz-app-errors').html('');
+<% if @quiz_app.errors.present? %>
+    <% @quiz_app.errors.full_messages.each do |message| %>
+        $("#edit-quiz-app-<%= @quiz_app.id %> .quiz-app-errors").append('<br><span><%= j message %></span>');
+    <% end %>
+<% else %>
+    $('.quiz-app-<%= @quiz_app.id %>').html('<%= j render @quiz_app %>');
+<% end %>

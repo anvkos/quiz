@@ -1,7 +1,8 @@
 class QuizAppsController < ApplicationController
   before_action :authenticate_user!, except: :vkontakte
-  before_action :set_quiz
+  before_action :set_quiz, only: [:create, :vkontakte]
   before_action :guest_authorization_vkontakte, only: :vkontakte
+  before_action :set_quiz_app, only: [:update]
 
   layout 'iframe'
 
@@ -12,11 +13,23 @@ class QuizAppsController < ApplicationController
     respond_with(@quiz_app = @quiz.quiz_apps.create(quiz_app_params))
   end
 
+  def update
+    authorize! :update, @quiz_app
+    @quiz_app.update(quiz_app_params)
+    respond_with(@quiz_app)
+  end
+
   def vkontakte
   end
 
+  private
+
   def set_quiz
     @quiz = Quiz.find(params[:quiz_id])
+  end
+
+  def set_quiz_app
+    @quiz_app = QuizApp.find(params[:id])
   end
 
   def guest_authorization_vkontakte
