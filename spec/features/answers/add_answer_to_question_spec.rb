@@ -22,7 +22,7 @@ feature 'Create answer', %q{
       within '.answer-fields' do
         fill_in 'Body', with: answer_text
       end
-      click_on 'Add'
+      click_on 'Add new question'
       within '.question' do
         expect(page).to have_content answer_text
       end
@@ -35,7 +35,7 @@ feature 'Create answer', %q{
           fill_in 'Body', with: ''
           check 'Correct'
         end
-        click_on 'Add'
+        click_on 'Add new question'
         expect(page).to have_content "Answers body can't be blank"
       end
     end

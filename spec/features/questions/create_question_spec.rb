@@ -19,7 +19,7 @@ feature 'Create question', %q{
       within '.question-fields' do
         fill_in 'Body', with: question_text
       end
-      click_on 'Add'
+      click_on 'Add new question'
       expect(page).to have_content question_text
       expect(current_path).to eq edit_quiz_path(quiz)
     end
@@ -29,7 +29,7 @@ feature 'Create question', %q{
         within '.question-fields' do
           fill_in 'Body', with: ''
         end
-        click_on 'Add'
+        click_on 'Add new question'
         expect(page).to have_content "Body can't be blank"
       end
     end
