@@ -34,8 +34,8 @@ class QuizAppsController < ApplicationController
 
   def guest_authorization_vkontakte
     app = @quiz.quiz_apps.find_by!(platform: 'vkontakte')
-    if VkontakteApi.auth_key_valid?(app, vk_params)
-      auth = VkontakteApi.auth(vk_params)
+    auth = VkontakteApi.auth(app.app_id, app.app_secret, vk_params[:auth_key], vk_params[:viewer_id])
+    unless auth.nil?
       @user = User.find_for_oauth(auth, true)
       sign_in @user
     end
