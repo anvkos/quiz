@@ -10,6 +10,10 @@ nav class="navbar  navbar-default navbar-fixed-top"
         - if user_signed_in?
           li
             = link_to 'Create Quiz',  new_quiz_path
+          li
+            = link_to 'My quizzes', quizzes_user_path
+          li
+            = link_to 'My ratings', ratings_user_path
       ul class="nav navbar-nav navbar-right"
         - if user_signed_in?
             li
