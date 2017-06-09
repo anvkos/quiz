@@ -6,7 +6,7 @@
     .question-errors.text-danger
     .form-group
       = f.label :body, 'Text question', class: 'col-sm-2 control-label'
-      .col-sm-9
+      .col-sm-8
         = f.text_field :body, id: "body-question-#{question.id}", class: 'form-control'
       .col-sm-1
-        = f.submit 'Save', class: 'btn btn-default btn-sm'
+        = f.submit 'Save', class: 'btn btn-default btn-sm btn-block'

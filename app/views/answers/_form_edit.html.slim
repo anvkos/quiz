@@ -8,8 +8,10 @@
       span.input-group-addon
         = f.label :correct
       span.input-group-addon
-        = f.check_box :correct, { id: "correct-answer-#{answer.id}" }, true, false
+        = f.check_box :correct, { id: "correct-answer-#{answer.id}" } , checked_value = "1", unchecked_value = "0"
       span.input-group-addon
         = f.label :body
       = f.text_field :body, id: "body-answer-#{answer.id}",  class: 'form-control'
-      = f.submit 'Save', class: 'btn btn-default btn-sm'
+      span.input-group-btn
+        = f.submit 'Save', class: 'btn btn-success btn-block'
+br

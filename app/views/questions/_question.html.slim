@@ -3,9 +3,9 @@
       h4.text-info
         = question.body
       = render 'questions/form_edit', question: question
-      hr
+      br
       div.question-answers
-        | Answers:
+        h5 Answers:
         = render question.answers
       hr
 

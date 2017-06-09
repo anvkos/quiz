@@ -1,6 +1,6 @@
 - if answer.persisted?
   div class=["answer", "answer-#{answer.id}"]
     -if answer.correct
-      span.text-success Correct
+      span.text-success &#10003; correct &nbsp;
     = answer.body
     = render 'answers/form_edit', answer: answer
