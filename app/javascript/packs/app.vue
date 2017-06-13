@@ -8,25 +8,28 @@
         <hr>
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div v-if="mode == 'start'">
+                <div v-if="mode == 'start'" class="game-start">
                     <div>
-                        {{ quiz.description }}
+                        <div>{{ quiz.description }}</div>
                         <div v-if="error" class="text-danger">
                             {{ error.message }}
                         </div>
-                        <button class="btn btn-danger btn-block" @click="onStart()">Start quiz</button>
+                        <p>
+                            <button class="btn btn-danger btn-block" @click="onStart()">Start quiz</button>
+                        </p>
                         <div class="shared-links">
-                        <button @click="onShareVK()">VK</button>
-                        <button @click="onShareOK()">OK</button>
-                        <button @click="onShareFB()">FB</button>
-                        <button @click="onShareTW()">TW</button>
+                        <button @click="onShareVK()" class='btn btn-primary'>VK</button>
+                        <button @click="onShareOK()" class='btn btn-warning'>OK</button>
+                        <button @click="onShareFB()" class='btn btn-default'><span class="text-info">FB</span></button>
+                        <button @click="onShareTW()" class='btn btn-info'>TW</button>
                     </div>
                     </div>
                 </div>
 
-                <div v-if="mode == 'question'">
-                    <div> score: {{ score }} </div>
-                    <div> time: {{ time_answer }} </div>
+                <div v-if="mode == 'question'" class="game-question">
+                    <div class="score pull-left text-success"> score: {{ score }} </div>
+                    <div class="time pull-right text-warning"> time: {{ time_answer }} </div>
+                    <div class="clearfix"></div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title text-center">{{ question.body }}</h3>
@@ -39,14 +42,16 @@
                     </div>
                 </div>
 
-                <div v-if="mode == 'finish'">
-                    <div>Your score {{ score }}</div>
-                    <button class="btn btn-danger btn-block" @click="onStart()">Start quiz</button>
+                <div v-if="mode == 'finish'" class="game-finish">
+                    <h2 class="score text-warning">Your score {{ score }}</h2>
+                    <p>
+                        <button class="btn btn-danger btn-block" @click="onStart()">Start quiz</button>
+                    </p>
                     <div class="shared-links">
-                        <button @click="onShareVK()">VK</button>
-                        <button @click="onShareOK()">OK</button>
-                        <button @click="onShareFB()">FB</button>
-                        <button @click="onShareTW()">TW</button>
+                        <button @click="onShareVK()" class='btn btn-primary'>VK</button>
+                        <button @click="onShareOK()" class='btn btn-warning'>OK</button>
+                        <button @click="onShareFB()" class='btn btn-default'><span class="text-info">FB</span></button>
+                        <button @click="onShareTW()" class='btn btn-info'>TW</button>
                     </div>
                 </div>
 
@@ -78,7 +83,7 @@ export default {
             return 'I have ' + this.score + ' score in quiz ' + this.quiz.title
         },
         url: function() {
-            return window.top.location.href
+            return location.protocol + '//' + location.host + location.pathname;
         }
     },
     methods: {
