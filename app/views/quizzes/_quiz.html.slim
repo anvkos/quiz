@@ -1,7 +1,8 @@
-.quiz
+.quiz.row
   .col-md-12
     h2
       = @quiz.title
+    = link_to 'Delete', @quiz, method: :delete, class: "pull-right"
     .col-md-9
       p
         = @quiz.description
@@ -9,19 +10,19 @@
         = @quiz.rules
     .col-md-3
       p
-        | Starts on:
+        | Starts on: &nbsp;
         = @quiz.starts_on
       p
-        | Ends on:
+        | Ends on: &nbsp;
         = @quiz.ends_on
       p
-        | Once per:
+        | Once per: &nbsp;
         = @quiz.once_per
       p
-        | Time limit:
+        | Time limit: &nbsp;
         = @quiz.time_limit
       p
-        | Time answer:
+        | Time answer: &nbsp;
         = @quiz.time_answer
       p
         | No mistakes:
@@ -29,7 +30,6 @@
             |  Yes
         - else
             |  No
-  .quiz-edit
-    = link_to 'Edit', '', class: 'edit-quiz-link text-success'
-    = render 'form_edit', quiz: quiz
-  = link_to 'Delete', @quiz, method: :delete, class: 'btn'
+    .quiz-edit
+      = link_to 'Edit', '', class: 'edit-quiz-link text-success pull-right'
+      = render 'form_edit', quiz: quiz

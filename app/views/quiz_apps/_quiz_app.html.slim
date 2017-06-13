@@ -1,6 +1,14 @@
 - if quiz_app.persisted?
     div class=['quiz-app', "quiz-app-#{quiz_app.id}"]
-      p = quiz_app.platform
-      p = quiz_app.app_id
-      p = quiz_app.app_secret
+      p
+        | Platform: &nbsp;
+        = quiz_app.platform
+      p
+        | App id: &nbsp;
+        = quiz_app.app_id
+      p
+        | App secret: &nbsp;
+        = quiz_app.app_secret
       = render 'quiz_apps/form_edit', quiz_app: quiz_app
+      br
+      hr

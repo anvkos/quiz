@@ -17,5 +17,5 @@
       .col-sm-9
         = f.text_field :app_secret, id: "app-secret-quiz-app-#{quiz_app.id}", class: 'form-control'
     .form-group
-      .col-sm-1
-        = f.submit 'Save', class: 'btn btn-default btn-sm'
+      .col-sm-2.col-sm-offset-9
+        = f.submit 'Save', class: 'btn btn-success btn-sm btn-block'
