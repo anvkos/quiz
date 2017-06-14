@@ -6,24 +6,22 @@
 
 import Vue from 'vue/dist/vue.esm'
 import App from './app.vue'
+import TurbolinksAdapter from 'vue-turbolinks';
 import VueResource from 'vue-resource'
 
 Vue.use(VueResource)
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbolinks:load', () => {
     Vue.http.headers.common['X-CSRF-Token'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-    document.body.appendChild(document.createElement('play-quiz'))
     var element = document.getElementById("play-quiz")
-
-    var quiz = JSON.parse(element.dataset.quiz)
-
     if (element != null) {
-
+        var quiz = JSON.parse(element.dataset.quiz)
         var vm = new Vue({
             el: element,
+            mixins: [TurbolinksAdapter],
             components: {
                 'appQuiz': App
-                },
+            },
             data: function() {
                 return {
                     quiz: quiz
@@ -36,6 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
-        })
+        });
     }
-})
+});
