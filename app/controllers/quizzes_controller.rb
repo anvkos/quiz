@@ -9,7 +9,7 @@ class QuizzesController < ApplicationController
   respond_to :js, only: [:update]
 
   def index
-    respond_with(@quiz = Quiz.all)
+    respond_with(@quizzes = Quiz.all)
   end
 
   def new
