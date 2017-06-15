@@ -17,7 +17,8 @@ class QuizzesController < ApplicationController
   end
 
   def create
-    respond_with(@quiz = current_user.quizzes.create(quiz_params))
+    @quiz = current_user.quizzes.create(quiz_params)
+    respond_with(@quiz, location: -> { edit_quiz_path(@quiz) })
   end
 
   def show

@@ -34,9 +34,9 @@ RSpec.describe QuizzesController, type: :controller do
           expect(Quiz.last.user).to eq @user
         end
 
-        it 'redirects to show view' do
+        it 'redirects to edit quiz' do
           post :create, params: { quiz: attributes_for(:quiz) }
-          expect(response).to redirect_to quiz_path(assigns(:quiz))
+          expect(response).to redirect_to edit_quiz_path(assigns(:quiz))
         end
       end
 
