@@ -10,6 +10,7 @@ FactoryGirl.define do
     time_limit 0
     time_answer 0
     no_mistakes false
+    question_randomly false
 
     trait :invalid do
       title nil

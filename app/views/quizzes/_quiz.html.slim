@@ -30,6 +30,12 @@
             |  Yes
         - else
             |  No
+      p
+        | Question randomly:
+        - if @quiz.question_randomly?
+            |  Yes
+        - else
+            |  No
     .quiz-edit
       = link_to 'Edit', '', class: 'edit-quiz-link text-success pull-right'
       = render 'form_edit', quiz: quiz

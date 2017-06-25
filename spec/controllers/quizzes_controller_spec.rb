@@ -127,7 +127,8 @@ RSpec.describe QuizzesController, type: :controller do
               once_per: 1.days.to_i,
               time_limit: 15.minutes.to_i,
               time_answer: 15,
-              no_mistakes: true
+              no_mistakes: true,
+              question_randomly: true
             }
             patch :update, params: { id: quiz, quiz: updated, format: :js }
             quiz.reload

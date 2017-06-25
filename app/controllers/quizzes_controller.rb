@@ -55,7 +55,8 @@ class QuizzesController < ApplicationController
       :once_per,
       :time_limit,
       :time_answer,
-      :no_mistakes
+      :no_mistakes,
+      :question_randomly
     )
   end
 

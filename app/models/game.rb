@@ -9,6 +9,11 @@ class Game < ApplicationRecord
 
   def choose_question
     unanswered_questions = quiz.questions.where.not(id: questions)
+    return unanswered_questions.first unless quiz.question_randomly
     unanswered_questions.shuffle.sample
+  end
+
+  def next_question
+    quiz.questions.where.not(id: questions).first
   end
 end

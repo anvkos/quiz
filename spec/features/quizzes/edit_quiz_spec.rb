@@ -38,7 +38,14 @@ feature 'Quiz editing', %q{
       end
 
       scenario 'try to edit quiz', js: true do
-        quiz = create(:quiz, user: user, once_per: 7200, time_limit: 3600, time_answer: 312)
+        quiz = create(
+          :quiz,
+          user: user,
+          once_per: 7200,
+          time_limit: 3600,
+          time_answer: 312,
+          question_randomly: true
+        )
         updated = {
           title: 'updated title',
           description: 'updated description',
@@ -48,20 +55,23 @@ feature 'Quiz editing', %q{
           once_per: 1.days.to_i,
           time_limit: 15.minutes.to_i,
           time_answer: 15,
-          no_mistakes: true
+          no_mistakes: true,
+          question_randomly: false
         }
         visit edit_quiz_path(quiz)
         click_on 'Edit'
         within '.quiz' do
-          updated.except(:no_mistakes).each { |field, value| fill_in "quiz[#{field}]", with: value }
+          updated.except(:no_mistakes, :question_randomly).each { |field, value| fill_in "quiz[#{field}]", with: value }
           check 'No mistakes'
+          uncheck 'Question randomly'
           click_on 'Save'
         end
-        updated.except(:no_mistakes).each do |attr, value|
+        updated.except(:no_mistakes, :question_randomly).each do |attr, value|
           expect(page).to_not have_content quiz.send(attr)
           expect(page).to have_content value
         end
         expect(page).to have_content 'No mistakes: Yes'
+        expect(page).to have_content 'Question randomly: No'
         within '.quiz-edit' do
           expect(page).to_not have_selector 'input'
           expect(page).to_not have_selector 'textarea'

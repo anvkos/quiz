@@ -32,4 +32,7 @@
     = f.text_field :time_answer, class: 'form-control'
   .form-group
     = f.label :no_mistakes
-    = f.check_box :no_mistakes, {}, true, false
+    = f.check_box :no_mistakes, {}, checked_value = "1", unchecked_value = "0"
+  .form-group
+    = f.label :question_randomly
+    = f.check_box :question_randomly, {}, checked_value = "1", unchecked_value = "0"

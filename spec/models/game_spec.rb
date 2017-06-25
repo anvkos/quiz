@@ -77,12 +77,36 @@ RSpec.describe Game, type: :model do
       end
     end
 
-    it 'returns different lines at different times' do
-      create_list(:question, 50, quiz: quiz)
-      10.times do
-        one_choose = game.choose_question
-        two_choose = game.choose_question
-        expect(one_choose).not_to eq two_choose
+    context 'question_randomly = false' do
+      before { quiz.update!(question_randomly: false) }
+
+      it 'returns one and the same question at different times' do
+        questions = create_list(:question, 10, quiz: quiz)
+        10.times do
+          one_choose = game.choose_question
+          two_choose = game.choose_question
+          expect(one_choose).to eq two_choose
+        end
+      end
+
+      it 'retunrs questions in order' do
+        questions = create_list(:question, 10, quiz: quiz)
+        questions.each_with_index do |question, index|
+          expect(game.choose_question).to eq question
+          game.questions_games.create(question: question)
+        end
+      end
+    end
+
+    context 'question_randomly = true' do
+      it 'returns different questions at different times' do
+        quiz.update!(question_randomly: true)
+        create_list(:question, 50, quiz: quiz)
+        10.times do
+          one_choose = game.choose_question
+          two_choose = game.choose_question
+          expect(one_choose).not_to eq two_choose
+        end
       end
     end
   end

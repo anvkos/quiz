@@ -19,6 +19,7 @@ feature 'Create quiz', %q{
     fill_in 'Time limit', with: 15.minutes.to_i
     fill_in 'Time answer', with: 15
     check 'No mistakes'
+    check 'Question randomly'
     click_on 'Create'
 
     expect(page).to have_content 'Quiz was successfully created.'
