@@ -35,9 +35,15 @@
                             <h3 class="panel-title text-center">{{ question.body }}</h3>
                         </div>
                         <div class="panel-body">
-                            <div v-for="answer in question.answers" :key='answer.id'>
-                                <button class="btn btn-default btn-block" @click="onAnswer(answer)">{{ answer.body }}</button>
-                            </div>
+                            <ul class="list-group">
+                              <li :class="['list-group-item', { correct: isCorrect[answer.id] }]" v-for="answer in question.answers" :key='answer.id'>
+                                <label  :value="answered">
+                                  <input type="checkbox" :value="answer.id" v-model="selectedAnswers" >
+                                  {{ answer.body }}
+                                </label>
+                              </li>
+                            </ul>
+                            <button @click.prevent="onAnswer()" class="btn btn-success btn-block">Answer</button>
                         </div>
                     </div>
                 </div>
@@ -72,7 +78,10 @@ export default {
             score: 0,
             error: {},
             time_answer: this.quiz_data.quiz.time_answer,
-            timerAnswer: null
+            timerAnswer: null,
+            answered: 0,
+            selectedAnswers: [],
+            isCorrect: [],
         }
     },
     computed: {
@@ -104,8 +113,15 @@ export default {
                     }
                 })
         },
-        onAnswer: function(answer) {
-            this.$http.post('/game/check_answer', { answer_id: answer.id } )
+        onAnswer: function() {
+            this.question.answers.map(answer => {
+              if (answer.correct == true) {
+                this.isCorrect[answer.id] = true;
+              }
+            });
+            this.answered += 1;
+            var answer_id = this.selectedAnswers[0];
+            this.$http.post('/game/check_answer', { answer_id: answer_id } )
                 .then(response => {
                     var data = response.data
                     if (data.action != null && data.action == 'finish') {
@@ -129,6 +145,8 @@ export default {
             this.score = 0
             this.question = {}
             this.error = {}
+            this.selectedAnswers = []
+            this.isCorrect = []
         },
         startAnswerTimer: function() {
             this.time_answer = this.quiz_data.quiz.time_answer
@@ -176,6 +194,9 @@ h2, div {
 p {
     font-size: 2em;
     text-align: center;
+}
+.correct {
+    background-color: green;
 }
 </style>
 
