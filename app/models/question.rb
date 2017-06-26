@@ -10,8 +10,6 @@ class Question < ApplicationRecord
   private
 
   def must_be_correct_answer
-    unless answers.map(&:correct).include?(true)
-      errors.add(:base, 'No answer is correct')
-    end
+    errors.add(:base, 'No answer is correct') unless answers.empty? || answers.map(&:correct).include?(true)
   end
 end

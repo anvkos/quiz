@@ -21,6 +21,7 @@ feature 'Create answer', %q{
       answer_text = 'My answer text'
       within '.answer-fields' do
         fill_in 'Body', with: answer_text
+        check 'Correct'
       end
       click_on 'Add new question'
       within '.question' do
