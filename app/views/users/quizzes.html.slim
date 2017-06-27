@@ -1,5 +1,5 @@
 h2
-  | Quizzes
+  | My Quizzes
 table.table.table-bordered
   thead
     tr
@@ -12,7 +12,7 @@ table.table.table-bordered
       th
         | Actions
   tbody
-    - @quizzes.each do |quiz|
+    - @user_quizzes.each do |quiz|
       tr
         td
           = link_to quiz.title, quiz_path(quiz)
@@ -21,27 +21,26 @@ table.table.table-bordered
         td
           = quiz.count_games
         td
-          = link_to 'edit', edit_quiz_path(quiz), class: 'text-success'
-h2 Training quiz
+          = link_to 'edit', edit_quiz_path(quiz), class: 'text-success btn'
+          = link_to 'ratings', edit_quiz_path(quiz), class: 'text-success btn'
+
+h2
+  | Member of quizzes
 table.table.table-bordered
   thead
     tr
       th
         | Quiz
       th
-        | user
+        | Place
       th
-        | Date game
-      th
-        | Score
+        | Ratings
   tbody
-    - @games.each do |game|
+    - @member_quizzes.each do |quiz|
       tr
         td
-          = link_to game.quiz.title, quiz_path(game.quiz)
+          = link_to quiz.title, quiz_path(quiz)
         td
-          = game.user.name
+          = current_user.place_in(quiz)
         td
-          = game.created_at
-        td
-          = game.score
+          = link_to 'ratings', ratings_user_path, class: 'text-success'

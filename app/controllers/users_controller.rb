@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   end
 
   def quizzes
-    @quizzes = current_user.quizzes
-    @games = Game.for_quizzes(@quizzes)
+    @user_quizzes = current_user.quizzes
+    @member_quizzes = current_user.member_quizzes
   end
 end

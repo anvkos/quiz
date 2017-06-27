@@ -52,4 +52,8 @@ class User < ApplicationRecord
     max_score = ratings.find_by(quiz_id: quiz.id).try(:max_score)
     1 + Rating.where(quiz_id: quiz).where('max_score > :max_score', max_score: max_score).count
   end
+
+  def member_quizzes
+    ratings.includes(:quiz).map(&:quiz)
+  end
 end
