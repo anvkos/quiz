@@ -1,13 +1,13 @@
 class PlayGameService
   include Wisper::Publisher
 
-  def perform(answer, user)
-    quiz = answer.question.quiz
+  def perform(answers, user)
+    quiz = answers.first.question.quiz
     game = Game.where(user: user, quiz: quiz).last
     return nil unless game_exists?(game)
     return nil if game_finished?(game)
-    correct = check_answer(game, answer)
-    return nil if finish_answer_incorrect?(game, correct)
+    corrects = answers.map { |answer| check_answer(game, answer) }
+    return nil if finish_answer_incorrect?(game, corrects)
     question = game.choose_question
     if question.nil?
       finish_game(game)
@@ -47,8 +47,8 @@ class PlayGameService
     [score, 1].max
   end
 
-  def finish_answer_incorrect?(game, correct)
-    if !correct && game.quiz.no_mistakes?
+  def finish_answer_incorrect?(game, corrects)
+    if corrects.include?(false) && game.quiz.no_mistakes?
       finish_game(game)
       return true
     end

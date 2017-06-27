@@ -54,7 +54,7 @@ RSpec.describe GamesController, type: :controller do
       let!(:answers) { create_list(:answer, 4, question: questions.last) }
 
       before do
-        post :check_answer, params: { answer_id: answer.id }, format: :json
+        post :check_answer, params: { answer_ids: [answer.id] }, format: :json
       end
 
       it 'returns 202 status' do
@@ -87,7 +87,7 @@ RSpec.describe GamesController, type: :controller do
       let(:answer) { create(:answer) }
 
       before do
-        post :check_answer, params: { answer_id: answer.id }, format: :json
+        post :check_answer, params: { answer_ids: [answer.id] }, format: :json
       end
 
       it 'returns 404 status' do
@@ -109,7 +109,7 @@ RSpec.describe GamesController, type: :controller do
       before do
         game.finished = true
         game.save
-        post :check_answer, params: { answer_id: answer.id }, format: :json
+        post :check_answer, params: { answer_ids: [answer.id] }, format: :json
       end
 
       it 'returns 200 status' do

@@ -15,14 +15,14 @@ class GamesController < ApplicationController
     service = PlayGameService.new
     service.on(:game_not_found) { render_error(:not_found, 'Error game', 'Game not found') }
     service.on(:game_finished) { |game| finish_game(game) }
-    @questions_game = service.perform(@answer, current_user)
+    @questions_game = service.perform(@answers, current_user)
     render json: @questions_game, include: ['question.answers'], status: :accepted unless @questions_game.nil?
   end
 
   private
 
   def game_params
-    params.permit(:quiz_id, :answer_id)
+    params.permit(:quiz_id, answer_ids: [])
   end
 
   def set_quiz
@@ -30,7 +30,7 @@ class GamesController < ApplicationController
   end
 
   def set_answer
-    @answer = Answer.find(game_params[:answer_id])
+    @answers = Answer.find(game_params[:answer_ids])
   end
 
   def finish_game(game)

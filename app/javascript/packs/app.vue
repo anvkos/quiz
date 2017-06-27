@@ -120,8 +120,9 @@ export default {
               }
             });
             this.answered += 1;
-            var answer_id = this.selectedAnswers[0];
-            this.$http.post('/game/check_answer', { answer_id: answer_id } )
+            var answer_ids = this.selectedAnswers;
+            this.selectedAnswers = [];
+            this.$http.post('/game/check_answer', { answer_ids: answer_ids } )
                 .then(response => {
                     var data = response.data
                     if (data.action != null && data.action == 'finish') {
