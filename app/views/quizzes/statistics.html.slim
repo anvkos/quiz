@@ -1,0 +1,38 @@
+h2
+  | Statistics
+.panel.panel-default
+  .panel-heading
+    = @quiz.title
+  table.table.table-bordered
+    thead
+      tr
+        th
+          | Users
+        th
+          | Games
+      tbody
+        tr
+          td
+            = @quiz.count_players
+          td
+            = @quiz.count_games
+.games
+  h3 Games
+  table.table.table-bordered
+    thead
+      tr
+        th
+          | user
+        th
+          | Score
+        th
+          | Date game
+    tbody
+      - @quiz.games.each do |game|
+        tr
+          td
+            = game.user.name
+          td
+            = game.score
+          td
+            = game.created_at

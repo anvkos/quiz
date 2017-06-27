@@ -22,7 +22,8 @@ table.table.table-bordered
           = quiz.count_games
         td
           = link_to 'edit', edit_quiz_path(quiz), class: 'text-success btn'
-          = link_to 'ratings', edit_quiz_path(quiz), class: 'text-success btn'
+          = link_to 'statistics', statistics_quiz_path(quiz), class: 'text-success btn'
+          = link_to 'ratings', ratings_quiz_path(quiz), class: 'text-success btn'
 
 h2
   | Member of quizzes
@@ -43,4 +44,4 @@ table.table.table-bordered
         td
           = current_user.place_in(quiz)
         td
-          = link_to 'ratings', ratings_user_path, class: 'text-success'
+          = link_to 'ratings', ratings_quiz_path(quiz), class: 'text-success btn'

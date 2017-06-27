@@ -3,8 +3,8 @@ Rails.application.routes.draw do
   root 'quizzes#index'
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
   patch 'confirmations/email', to: 'confirmations#email', as: :confirmation_email
-  get 'users/ratings', to: 'users#ratings', as: 'ratings_user'
-  get 'users/quizzes', to: 'users#quizzes', as: 'quizzes_user'
+  get 'user/ratings', to: 'users#ratings', as: 'ratings_user'
+  get 'user/quizzes', to: 'users#quizzes', as: 'quizzes_user'
 
   resources :quizzes do
     resources :questions, shallow: true do
@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       get :vkontakte, on: :collection
     end
     get :ratings, on: :member
+    get :statistics, on: :member
   end
 
   resource :game do
