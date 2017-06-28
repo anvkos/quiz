@@ -1,5 +1,5 @@
 class QuizzesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :ratings]
+  before_action :authenticate_user!, except: [:index, :show, :ratings, :statistics]
   before_action :set_quiz, only: [:show, :edit, :update, :destroy, :ratings, :statistics]
   before_action :build_question, only: [:edit]
 
@@ -44,6 +44,8 @@ class QuizzesController < ApplicationController
   end
 
   def statistics
+    @games = Game.includes(:user).where(quiz_id: @quiz.id).order('id DESC').page(number_page)
+    respond_with(@games)
   end
 
   private
@@ -69,5 +71,9 @@ class QuizzesController < ApplicationController
 
   def build_question
     @question = @quiz.questions.build
+  end
+
+  def number_page
+    params[:page] || 1
   end
 end

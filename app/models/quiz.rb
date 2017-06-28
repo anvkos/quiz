@@ -13,8 +13,4 @@ class Quiz < ApplicationRecord
   def count_games
     ratings.sum(:count_games)
   end
-
-  def games
-    Game.includes(:user).where(quiz_id: id).order('id DESC')
-  end
 end

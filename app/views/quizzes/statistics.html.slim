@@ -28,7 +28,7 @@ h2
         th
           | Date game
     tbody
-      - @quiz.games.each do |game|
+      - @games.each do |game|
         tr
           td
             = game.user.name
@@ -36,3 +36,4 @@ h2
             = game.score
           td
             = game.created_at
+  = paginate @games

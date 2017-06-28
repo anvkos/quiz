@@ -4,6 +4,8 @@ class Game < ApplicationRecord
   has_many :questions_games
   has_many :questions, through: :questions_games
 
+  paginates_per 25
+
   scope :training, -> { joins(:quiz).where('quizzes.once_per > 0').order(:created_at) }
   scope :for_quizzes, ->(_quizzes) { joins(:quiz).where(quiz: _quizzes) }
 

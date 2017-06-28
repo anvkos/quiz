@@ -74,9 +74,9 @@ RSpec.describe QuizzesController, type: :controller do
     context 'Authenticated user' do
       context 'author' do
         before do
-         sign_in quiz.user
-         get :edit, params: { id: quiz }
-       end
+          sign_in quiz.user
+          get :edit, params: { id: quiz }
+        end
 
         it 'assings the requested quiz to @quiz' do
           expect(assigns(:quiz)).to eq quiz
@@ -249,14 +249,38 @@ RSpec.describe QuizzesController, type: :controller do
 
   describe 'GET #ratings' do
     let(:quiz) { create(:quiz) }
+
     it "returns http success" do
       get :ratings, params: { id: quiz }
       expect(response).to have_http_status(:success)
     end
 
-    it 'render update template' do
+    it 'render ratings template' do
       get :ratings, params: { id: quiz }
       expect(response).to render_template :ratings
+    end
+  end
+
+  describe 'GET #statistics' do
+    let(:quiz) { create(:quiz) }
+    let!(:games) { create_list(:game, 10, quiz: quiz) }
+
+    before { get :statistics, params: { id: quiz } }
+
+    it "returns http success" do
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'render statistics template' do
+      expect(response).to render_template :statistics
+    end
+
+    it 'assings the requested quiz to @quiz' do
+      expect(assigns(:quiz)).to eq quiz
+    end
+
+    it 'assings the requested quiz to @games' do
+      expect(assigns(:games)).to match_array(games)
     end
   end
 end
