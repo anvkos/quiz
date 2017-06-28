@@ -272,24 +272,48 @@ RSpec.describe QuizzesController, type: :controller do
 
   describe 'GET #statistics' do
     let(:quiz) { create(:quiz) }
-    let!(:games) { create_list(:game, 10, quiz: quiz) }
 
-    before { get :statistics, params: { id: quiz } }
+    context 'Authenticated user' do
+      context 'author' do
+        let!(:games) { create_list(:game, 10, quiz: quiz) }
 
-    it "returns http success" do
-      expect(response).to have_http_status(:success)
+        before do
+          sign_in quiz.user
+          get :statistics, params: { id: quiz }
+        end
+
+        it "returns http success" do
+          expect(response).to have_http_status(:success)
+        end
+
+        it 'render statistics template' do
+          expect(response).to render_template :statistics
+        end
+
+        it 'assings the requested quiz to @quiz' do
+          expect(assigns(:quiz)).to eq quiz
+        end
+
+        it 'assings the requested quiz to @games' do
+          expect(assigns(:games)).to match_array(games)
+        end
+      end
+
+      context 'not author' do
+        sign_in_user
+
+        it 'try view sttaistics' do
+          get :statistics, params: { id: quiz }
+          expect(response).to redirect_to root_path
+        end
+      end
     end
 
-    it 'render statistics template' do
-      expect(response).to render_template :statistics
-    end
-
-    it 'assings the requested quiz to @quiz' do
-      expect(assigns(:quiz)).to eq quiz
-    end
-
-    it 'assings the requested quiz to @games' do
-      expect(assigns(:games)).to match_array(games)
+    context 'Non-authenticated user' do
+      it 'try view sttaistics' do
+        get :statistics, params: { id: quiz }
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 end

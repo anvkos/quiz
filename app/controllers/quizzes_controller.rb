@@ -1,10 +1,10 @@
 class QuizzesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :ratings, :statistics]
+  before_action :authenticate_user!, except: [:index, :show, :ratings]
   before_action :set_quiz, only: [:show, :edit, :update, :destroy, :ratings, :statistics]
   before_action :build_question, only: [:edit]
 
   authorize_resource
-  skip_authorize_resource only: [:ratings, :statistics]
+  skip_authorize_resource only: [:ratings]
 
   respond_to :js, only: [:update]
 
@@ -45,6 +45,7 @@ class QuizzesController < ApplicationController
   end
 
   def statistics
+    authorize! :statistics, @quiz, current_user
     @games = Game.includes(:user).where(quiz_id: @quiz.id).order('id DESC').page(number_page)
     respond_with(@games)
   end

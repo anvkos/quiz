@@ -19,7 +19,7 @@ class Ability
   def user_abilities
     guest_abilities
     can :create, Quiz
-    can [:edit, :update, :destroy], Quiz, user_id: user.id
+    can [:edit, :update, :destroy, :statistics], Quiz, user_id: user.id
     can [:create, :update, :destroy], Question do |question|
       user.author?(question.quiz)
     end
