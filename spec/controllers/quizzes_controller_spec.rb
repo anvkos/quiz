@@ -249,15 +249,24 @@ RSpec.describe QuizzesController, type: :controller do
 
   describe 'GET #ratings' do
     let(:quiz) { create(:quiz) }
+    let(:ratings) { create_list(:rating, 10, quiz: quiz) }
+
+    before { get :ratings, params: { id: quiz } }
 
     it "returns http success" do
-      get :ratings, params: { id: quiz }
       expect(response).to have_http_status(:success)
     end
 
     it 'render ratings template' do
-      get :ratings, params: { id: quiz }
       expect(response).to render_template :ratings
+    end
+
+    it 'assings the requested quiz to @quiz' do
+      expect(assigns(:quiz)).to eq quiz
+    end
+
+    it 'assings the requested quiz to @ratings' do
+      expect(assigns(:ratings)).to match_array(ratings)
     end
   end
 

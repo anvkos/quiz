@@ -40,7 +40,8 @@ class QuizzesController < ApplicationController
   end
 
   def ratings
-    respond_with(@ratings = @quiz.ratings.includes(:user).first_max_score)
+    @ratings = @quiz.ratings.includes(:user).first_max_score.page(number_page)
+    respond_with(@ratings)
   end
 
   def statistics
