@@ -6,6 +6,7 @@ RSpec.describe Quiz, type: :model do
     it { should have_many(:questions).dependent(:destroy) }
     it { should have_many(:ratings).dependent(:destroy) }
     it { should have_many(:quiz_apps).dependent(:destroy) }
+    it { should have_many(:points).dependent(:destroy) }
   end
 
   describe 'validations' do

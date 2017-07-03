@@ -3,6 +3,7 @@ class Quiz < ApplicationRecord
   has_many :questions, dependent: :destroy
   has_many :ratings, dependent: :destroy
   has_many :quiz_apps, dependent: :destroy
+  has_many :points, dependent: :destroy
 
   validates :title, :description, :rules, presence: true
 
