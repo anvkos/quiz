@@ -1,0 +1,10 @@
+- if point.persisted?
+    div class=['point', "point-#{point.id}"]
+      span
+        | time answer < &nbsp;
+        = point.time
+      span
+        | score: &nbsp;
+        = point.score
+      = render 'points/form_edit', point: point
+      hr

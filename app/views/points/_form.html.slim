@@ -1,0 +1,13 @@
+= form_for [quiz, quiz.points.build], remote: true, html: { class: 'form-horizontal' } do |f|
+  .col-sm-offset-2.col-sm-10.point-errors.text-danger
+  .form-group.point-fields
+    = f.label :time, 'Time point', class: 'col-sm-4 control-label'
+    .col-sm-8
+      = f.text_field :time, class: 'form-control'
+  .form-group.point-fields
+    = f.label :score, class: 'col-sm-4 control-label'
+    .col-sm-8
+      = f.text_field :score, class: 'form-control'
+  .form-group
+    .col-sm-offset-7.col-sm-2
+      = f.submit 'Add new point', class: 'btn btn-success'

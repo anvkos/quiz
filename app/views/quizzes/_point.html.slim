@@ -1,0 +1,11 @@
+.row
+  .col-md-4
+    .form_add_point.panel.panel-default
+      .panel-heading Add new point
+      .panel-body
+        = render 'points/form', quiz: quiz
+  .col-md-8
+    .points.panel.panel-default
+      .panel-heading Points
+      .panel-body
+        = render @quiz.points

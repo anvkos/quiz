@@ -1,0 +1,10 @@
+$('.point-errors').html('');
+<% if @point.errors.present? %>
+    <% @point.errors.full_messages.each do |message| %>
+        $('.point-errors').append('<br><span><%= j message %></span>');
+    <% end %>
+<% else %>
+    $('.points .panel-body').append('<%= j render @point %>');
+    $('#point_time').val('');
+    $('#point_score').val('');
+<% end %>

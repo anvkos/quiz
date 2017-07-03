@@ -44,7 +44,7 @@ RSpec.describe QuizAppsController, type: :controller do
         it 'Not saved the new quiz_app in the database' do
           expect do
               post :create, params: { quiz_id: quiz, quiz_app: attributes_for(:quiz_app), format: :js }
-            end.to_not change(Question, :count)
+            end.to_not change(QuizApp, :count)
         end
 
         it 'render forbidden template' do

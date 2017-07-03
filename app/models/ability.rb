@@ -29,5 +29,8 @@ class Ability
     can [:create, :update], QuizApp do |quiz_app|
       user.author?(quiz_app.quiz)
     end
+    can [:create], Point do |point|
+      user.author?(point.quiz)
+    end
   end
 end

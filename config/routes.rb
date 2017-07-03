@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :quiz_apps, shallow: true do
       get :vkontakte, on: :collection
     end
+    resources :points, shallow: true
     get :ratings, on: :member
     get :statistics, on: :member
   end
