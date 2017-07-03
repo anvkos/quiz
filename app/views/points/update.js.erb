@@ -1,0 +1,8 @@
+$('.point-errors').html('');
+<% if @point.errors.present? %>
+    <% @point.errors.full_messages.each do |message| %>
+        $("#edit-point-<%= @point.id %> .point-errors").append('<span><%= j message %></span>');
+    <% end %>
+<% else %>
+    $('.point-<%= @point.id %>').html('<%= j render @point %>');
+<% end %>

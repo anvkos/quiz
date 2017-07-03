@@ -1,14 +1,15 @@
 = render @quiz
+= render 'point', quiz: @quiz
 .row
-.form_add_question.panel.panel-default
-  .panel-heading Add new question
-  .panel-body
-    = render 'questions/form', quiz: @quiz, question: @question
+  .form_add_question.panel.panel-default
+    .panel-heading Add new question
+    .panel-body
+      = render 'questions/form', quiz: @quiz, question: @question
 
-.questions.panel.panel-default
-  .panel-heading Questions
-  .panel-body
-    = render @quiz.questions
+  .questions.panel.panel-default
+    .panel-heading Questions
+    .panel-body
+      = render @quiz.questions
 
 .row
   .col-md-6

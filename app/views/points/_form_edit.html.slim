@@ -1,0 +1,16 @@
+.pull-right
+  = link_to 'Edit', '', class: 'edit-point-link btn btn-xs btn-success', data: { point_id: point.id }
+  = link_to 'Delete', point, method: :delete, data: { confirm: 'The quiz app will be deleted. You are sure?' }, remote: true, class: 'btn btn-xs btn-danger'
+.point-edit
+  = form_for point, remote: true, html: { id: "edit-point-#{point.id}", class: 'edit_point form-inline' } do |f|
+    .point-errors.text-danger
+    .form-group
+      = f.label :time, 'Time point', class: 'col-sm-4 control-label'
+      .col-sm-2
+        = f.text_field :time, id: "time-point-#{point.id}", class: 'form-control'
+    .form-group
+      = f.label :score, class: 'col-sm-4 col-md-2 control-label'
+      .col-sm-4
+        = f.text_field :score, id: "score-point-#{point.id}", class: 'form-control'
+    .form-group
+        = f.submit 'Save', class: 'btn btn-success btn-sm btn-block'

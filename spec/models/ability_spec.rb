@@ -78,7 +78,7 @@ RSpec.describe Ability do
       it { should_not be_able_to :update, quiz_app_other_user, user: user }
     end
 
-    context 'point' do
+    context 'Point' do
       let(:point) { create(:point, quiz: quiz) }
       let(:point_other_user) { create(:point, quiz: quiz_other_user) }
 
@@ -87,6 +87,9 @@ RSpec.describe Ability do
       it "Can not create points for another user's quiz" do
         expect(subject.can?(:create, quiz_other_user.points.new)).to be_falsey
       end
+
+      it { should be_able_to :update, Point }
+      it { should_not be_able_to :update, point_other_user, user: user }
     end
   end
 end

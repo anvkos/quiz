@@ -55,4 +55,88 @@ RSpec.describe PointsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #update' do
+    let(:quiz) { create(:quiz) }
+    let!(:point) { create(:point, quiz: quiz) }
+
+    context 'Authenticated user' do
+      context 'author quiz' do
+        before { sign_in quiz.user }
+
+        context 'with valid attributes' do
+          it 'assings the requested point to @point' do
+            patch :update, params: { id: point, point: attributes_for(:point), format: :js }
+            expect(assigns(:point)).to eq point
+          end
+
+          it 'changes point attributes' do
+            point_updated = {
+              time: 33,
+              score: 789,
+            }
+            patch :update, params: { id: point, point: point_updated, format: :js }
+            point.reload
+            expect(point.time).to eq point_updated[:time]
+            expect(point.score).to eq point_updated[:score]
+          end
+
+          it 'render update template' do
+            patch :update, params: { id: point, point: attributes_for(:point), format: :js }
+            expect(response).to render_template :update
+          end
+        end
+
+        context 'with invalid attributes' do
+          before do
+            patch :update, params: { id: point, point: { time: nil, score: nil }, format: :js }
+          end
+
+          it 'does not update the point' do
+            expect(point.time).not_to be_nil
+            expect(point.score).not_to be_nil
+          end
+
+          it 'render update template' do
+            expect(response).to render_template :update
+          end
+        end
+      end
+
+      context 'User is not author' do
+        let(:another_user) { create(:user) }
+        let(:point_updated) { { time: 33, score: 789 } }
+
+        before do
+          sign_in another_user
+          patch :update, params: { id: point, point: point_updated, format: :js }
+        end
+
+        it 'try update point' do
+          point.reload
+          expect(point.time).not_to eq point_updated[:time]
+          expect(point.score).not_to eq point_updated[:score]
+        end
+
+        it 'render forbidden template' do
+          expect(response).to have_http_status(:forbidden)
+          expect(response).to render_template 'errors/error_forbidden'
+        end
+      end
+    end
+
+    context 'Unauthorized user' do
+      it 'try update point' do
+        point_updated = {
+          time: 55,
+          score: 789,
+          app_secret: 'new_update_secret'
+        }
+        patch :update, params: { id: point, point: point_updated, format: :js }
+        point.reload
+        expect(point.time).not_to eq point_updated[:time]
+        expect(point.score).not_to eq point_updated[:score]
+      end
+    end
+  end
 end
