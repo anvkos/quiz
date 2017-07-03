@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe PointsController, type: :controller do
+  let(:quiz) { create(:quiz) }
+
   describe 'POST #create' do
     context 'Authenticated user' do
-      let(:quiz) { create(:quiz) }
-
       context 'author quiz' do
 
         before { sign_in quiz.user }
@@ -57,7 +57,6 @@ RSpec.describe PointsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let(:quiz) { create(:quiz) }
     let!(:point) { create(:point, quiz: quiz) }
 
     context 'Authenticated user' do
@@ -136,6 +135,46 @@ RSpec.describe PointsController, type: :controller do
         point.reload
         expect(point.time).not_to eq point_updated[:time]
         expect(point.score).not_to eq point_updated[:score]
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:point) { create(:point, quiz: quiz) }
+
+    context 'Authenticated user' do
+      context 'author quiz' do
+        before { sign_in quiz.user }
+
+        it 'delete point' do
+          expect { delete :destroy, params: { id: point }, format: :js }.to change(Point, :count).by(-1)
+        end
+
+        it 'render destroy template' do
+          delete :destroy, params: { id: point }, format: :js
+          expect(response).to render_template :destroy
+        end
+      end
+
+      context 'User is not the author' do
+        let(:another_user) { create(:user) }
+        before { sign_in another_user }
+
+        it 'delete try point' do
+          expect { delete :destroy, params: { id: point }, format: :js }.to_not change(Point, :count)
+        end
+
+        it 'render forbidden template' do
+          delete :destroy, params: { id: point }, format: :js
+          expect(response).to have_http_status(:forbidden)
+          expect(response).to render_template 'errors/error_forbidden'
+        end
+      end
+    end
+
+    context 'Unauthorized user' do
+      it 'delete point' do
+        expect { delete :destroy, params: { id: point }, format: :js }.to_not change(Point, :count)
       end
     end
   end

@@ -1,0 +1,6 @@
+<% if @point.destroyed? %>
+  $('.point-<%= @point.id %>').remove();
+  $('.notice').html('Point was successfully destroyed.');
+<% else %>
+  $('.alert').html('You can not remove an point!');
+<% end %>

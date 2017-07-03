@@ -1,6 +1,6 @@
 class PointsController < ApplicationController
   before_action :set_quiz, only: :create
-  before_action :set_point, only: [:update]
+  before_action :set_point, only: [:update, :destroy]
 
   authorize_resource
 
@@ -12,8 +12,12 @@ class PointsController < ApplicationController
   end
 
   def update
-    authorize! :update, @point
     @point.update(point_params)
+    respond_with(@point)
+  end
+
+  def destroy
+    @point.destroy
     respond_with(@point)
   end
 

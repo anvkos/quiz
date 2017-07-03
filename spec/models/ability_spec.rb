@@ -90,6 +90,9 @@ RSpec.describe Ability do
 
       it { should be_able_to :update, Point }
       it { should_not be_able_to :update, point_other_user, user: user }
+
+      it { should be_able_to :destroy, point, user: user }
+      it { should_not be_able_to :destroy, point_other_user, user: user }
     end
   end
 end

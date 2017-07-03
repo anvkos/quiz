@@ -1,6 +1,6 @@
 .pull-right
   = link_to 'Edit', '', class: 'edit-point-link btn btn-xs btn-success', data: { point_id: point.id }
-  = link_to 'Delete', point, method: :delete, data: { confirm: 'The quiz app will be deleted. You are sure?' }, remote: true, class: 'btn btn-xs btn-danger'
+  = link_to 'Delete', point, method: :delete, data: { confirm: 'The point will be deleted. You are sure?' }, remote: true, class: 'btn btn-xs btn-danger'
 .point-edit
   = form_for point, remote: true, html: { id: "edit-point-#{point.id}", class: 'edit_point form-inline' } do |f|
     .point-errors.text-danger
