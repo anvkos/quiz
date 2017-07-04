@@ -40,10 +40,15 @@ class PlayGameService
   end
 
   def calculate_score(game)
-    return 1 unless game.quiz.time_answer.positive?
-    max_score = game.quiz.time_answer.to_i
     question = game.questions_games.last
-    score = max_score - (Time.now.to_i - question.created_at.to_i)
+    time_answer = Time.now.to_i - question.created_at.to_i
+    points = game.quiz.points
+    if points.present?
+      time_points = points.sort_by(&:time).select { |point| point.time >= time_answer }
+      return time_points.first.score
+    end
+    return 1 unless game.quiz.time_answer.positive?
+    score = game.quiz.time_answer.to_i - time_answer
     [score, 1].max
   end
 
@@ -56,7 +61,7 @@ class PlayGameService
   end
 
   def time_game_over?(game)
-    return false unless time_limit_expired?(game) || time_answer_expired?(game)
+    return false unless time_points_expired?(game) || time_limit_expired?(game) || time_answer_expired?(game)
     finish_game(game)
     true
   end
@@ -66,6 +71,15 @@ class PlayGameService
     rating.update(max_score: game.score) if rating.max_score.to_i < game.score
     game.update(finished: true)
     broadcast(:game_finished, game)
+  end
+
+  def time_points_expired?(game)
+    time_points = game.quiz.points
+    return false if time_points.blank?
+    time_answer = Time.now.to_i - game.questions_games.last.created_at.to_i
+    points = time_points.select { |point| point.time >= time_answer }
+    return false if points.present?
+    true
   end
 
   def time_limit_expired?(game)

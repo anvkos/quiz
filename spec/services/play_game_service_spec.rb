@@ -17,47 +17,66 @@ RSpec.describe PlayGameService do
       expect(question_game.question).to eq question_two
     end
 
-    it 'score are increased by 1' do
-      answer_question_one.correct = true
-      answer_question_one.save
-      score = game.score
-      service.perform([answer_question_one], user)
-      expect(game.reload.score).to eq (score + 1)
+    context 'score based option time_answer' do
+      it 'score are increased by 1' do
+        answer_question_one.correct = true
+        answer_question_one.save
+        score = game.score
+        service.perform([answer_question_one], user)
+        expect(game.reload.score).to eq (score + 1)
+      end
+
+      it 'score not increased' do
+        score = game.score
+        service.perform([answer_question_one], user)
+        expect(game.reload.score).to eq score
+      end
+
+      context 'score depend on speed answer' do
+        before do
+          answer_question_one.correct = true
+          answer_question_one.save
+          @score = game.score
+        end
+
+        it 'speedy answer' do
+          quiz.update(time_answer: 30)
+          service.perform([answer_question_one], user)
+          expect(game.reload.score).to eq @score + 20
+        end
+
+        it 'slow answer' do
+          quiz.update(time_answer: 10)
+          service.perform([answer_question_one], user)
+          expect(game.reload.score).to eq @score + 1
+        end
+      end
     end
 
-    it 'score not increase increased' do
-      score = game.score
-      service.perform([answer_question_one], user)
-      expect(game.reload.score).to eq score
-    end
-
-    context 'score depend on speed answer' do
+    context 'score based on time points' do
       before do
         answer_question_one.correct = true
         answer_question_one.save
         @score = game.score
       end
 
-      it 'speedy answer' do
-        quiz.update(time_answer: 30)
+      it 'score one time point' do
+        point = create(:point, quiz: quiz, time: 10, score: 100)
         service.perform([answer_question_one], user)
-        expect(game.reload.score).to eq @score + 20
+        expect(game.reload.score).to eq @score + point.score
       end
 
-      it 'slow answer' do
-        quiz.update(time_answer: 10)
+      it 'score between time points' do
+        point_first = create(:point, quiz: quiz, time: 3, score: 100)
+        point_second = create(:point, quiz: quiz, time: 20, score: 20)
+        service.perform([answer_question_one], user)
+        expect(game.reload.score).to eq @score + point_second.score
+      end
+
+      it 'no time points' do
         service.perform([answer_question_one], user)
         expect(game.reload.score).to eq @score + 1
       end
-    end
-
-    it 'score depend on speed answer ' do
-      quiz.update(time_answer: 30)
-      answer_question_one.correct = true
-      answer_question_one.save
-      score = game.score
-      service.perform([answer_question_one], user)
-      expect(game.reload.score).to eq score + 20
     end
 
     it 'create new record questions game' do
@@ -89,6 +108,11 @@ RSpec.describe PlayGameService do
         it 'time answer expired' do
           time_answer = 5
           quiz.update(time_answer: time_answer)
+          expect { service.perform([answer_question_one], user) }.to broadcast(:game_finished)
+        end
+
+        it 'time points expired' do
+          create(:point, quiz: quiz, time: 1)
           expect { service.perform([answer_question_one], user) }.to broadcast(:game_finished)
         end
 
