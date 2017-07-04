@@ -145,6 +145,47 @@ RSpec.describe QuizAppsController, type: :controller do
     end
   end
 
+  describe 'DELETE #destroy' do
+    let(:quiz) { create(:quiz) }
+    let!(:quiz_app) { create(:quiz_app, quiz: quiz) }
+
+    context 'Authenticated user' do
+      context 'author quiz' do
+        before { sign_in quiz.user }
+
+        it 'delete quiz_app' do
+          expect { delete :destroy, params: { id: quiz_app }, format: :js }.to change(QuizApp, :count).by(-1)
+        end
+
+        it 'render destroy template' do
+          delete :destroy, params: { id: quiz_app }, format: :js
+          expect(response).to render_template :destroy
+        end
+      end
+
+      context 'User is not the author' do
+        let(:another_user) { create(:user) }
+        before { sign_in another_user }
+
+        it 'delete try quiz_app' do
+          expect { delete :destroy, params: { id: quiz_app }, format: :js }.to_not change(QuizApp, :count)
+        end
+
+        it 'render forbidden template' do
+          delete :destroy, params: { id: quiz_app }, format: :js
+          expect(response).to have_http_status(:forbidden)
+          expect(response).to render_template 'errors/error_forbidden'
+        end
+      end
+    end
+
+    context 'Unauthorized user' do
+      it 'delete quiz_app' do
+        expect { delete :destroy, params: { id: quiz_app }, format: :js }.to_not change(QuizApp, :count)
+      end
+    end
+  end
+
   describe '#vkontakte' do
     let!(:user) { create(:user) }
     let(:quiz) { create(:quiz) }

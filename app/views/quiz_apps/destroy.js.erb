@@ -1,0 +1,6 @@
+<% if @quiz_app.destroyed? %>
+  $('.quiz-app-<%= @quiz_app.id %>').remove();
+  $('.notice').html('Quiz App was successfully destroyed.');
+<% else %>
+  $('.alert').html('You can not remove an quiz app!');
+<% end %>

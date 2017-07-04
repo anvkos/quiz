@@ -2,7 +2,7 @@ class QuizAppsController < ApplicationController
   before_action :authenticate_user!, except: :vkontakte
   before_action :set_quiz, only: [:create, :vkontakte]
   before_action :guest_authorization_vkontakte, only: :vkontakte
-  before_action :set_quiz_app, only: [:update]
+  before_action :set_quiz_app, only: [:update, :destroy]
 
   layout 'iframe'
 
@@ -16,6 +16,12 @@ class QuizAppsController < ApplicationController
   def update
     authorize! :update, @quiz_app
     @quiz_app.update(quiz_app_params)
+    respond_with(@quiz_app)
+  end
+
+  def destroy
+    authorize! :destroy, @quiz_app
+    @quiz_app.destroy
     respond_with(@quiz_app)
   end
 

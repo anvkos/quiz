@@ -76,6 +76,9 @@ RSpec.describe Ability do
 
       it { should be_able_to :update, QuizApp }
       it { should_not be_able_to :update, quiz_app_other_user, user: user }
+
+      it { should be_able_to :destroy, quiz_app, user: user }
+      it { should_not be_able_to :destroy, quiz_app_other_user, user: user }
     end
 
     context 'Point' do
